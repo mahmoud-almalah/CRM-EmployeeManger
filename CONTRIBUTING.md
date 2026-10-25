@@ -33,6 +33,10 @@ Hotfixes use `hotfix/<issue>-<slug>` from `master` and are merged back into `dev
 - Docs and `CHANGELOG.md` updated where relevant
 - PR squash-merged into `develop`
 
+## Questions and ideas
+
+Use [Discussions](https://github.com/mahmoud-almalah/employee-manager-api/discussions) for questions, ideas and show-and-tell. Open an issue only for a bug or a planned task; an idea that is accepted becomes an issue on the board.
+
 ## Architecture rules
 - Dependencies point inward: Presentation → Application → Domain. Infrastructure implements contracts defined in Application.
 - Controllers never touch Eloquent directly; they dispatch commands and ask queries through the buses.

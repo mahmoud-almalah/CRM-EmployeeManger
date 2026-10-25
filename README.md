@@ -91,6 +91,7 @@ CI runs the same three on every pull request.
 - Branches: `master` (production), `staging` (release candidate), `develop` (default, integration), `feature/<issue>-<slug>` for each task. See [CONTRIBUTING](CONTRIBUTING.md).
 - Commits follow Conventional Commits; PRs are squash-merged into `develop` once CI is green.
 - Sprints end with a `develop → staging → master` release, a tag, and a review and retrospective in [`docs/agile`](docs/agile).
+- Questions and ideas go in [Discussions](https://github.com/mahmoud-almalah/employee-manager-api/discussions); bugs and planned work are issues on the board.
 
 ## How this was built
 
