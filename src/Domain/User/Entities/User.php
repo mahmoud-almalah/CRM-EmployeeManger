@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\User\Entities;
 
+use Database\Factories\UserFactory;
 use Domain\User\Casts\Email;
 use Domain\User\Casts\Name;
 use Domain\User\Casts\Phone;
@@ -11,6 +12,7 @@ use Domain\User\Traits\UserMutators;
 use Domain\User\Traits\UserRelations;
 use Domain\User\Traits\UserScopes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Shared\Enums\CurrencyEnum;
@@ -19,13 +21,18 @@ use Spatie\Permission\Traits\HasRoles;
 
 final class User extends Authenticatable
 {
-    use HasApiTokens, HasRoles,
+    use HasApiTokens, HasFactory, HasRoles,
         HasUuids, UserMutators,
         UserRelations, UserScopes;
 
     public const TABLE = 'users';
 
     protected $table = self::TABLE;
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     protected $fillable = [
         'name',
