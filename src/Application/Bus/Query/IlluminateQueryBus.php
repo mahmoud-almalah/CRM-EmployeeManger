@@ -7,7 +7,6 @@ namespace Application\Bus\Query;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\Trait\BusMappingTrait;
 use Application\Bus\Trait\LoggingTrait;
-use Illuminate\Bus\Dispatcher;
 
 class IlluminateQueryBus implements QueryBusContract
 {
@@ -19,9 +18,10 @@ class IlluminateQueryBus implements QueryBusContract
 
         if ($handler instanceof QueryHandler) {
             $this->logExecution('Query', $query);
+
             return $handler->handle($query);
         }
 
-        throw new \InvalidArgumentException("Handler is not a valid QueryHandler instance.");
+        throw new \InvalidArgumentException('Handler is not a valid QueryHandler instance.');
     }
 }

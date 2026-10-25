@@ -1,44 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use Domain\User\Entities\User;
+use Domain\User\ValueObjects\EmailObject;
+use Domain\User\ValueObjects\NameObject;
+use Domain\User\ValueObjects\PhoneObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Shared\Enums\CurrencyEnum;
+use Shared\Enums\UserStatus;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => new NameObject(fake()->firstName(), null, fake()->lastName()),
+            'username' => fake()->unique()->userName(),
+            'email' => new EmailObject(fake()->unique()->safeEmail()),
+            'phone_number' => new PhoneObject((string) fake()->unique()->numerify('1#########'), '+20'),
+            'address' => fake()->streetAddress(),
+            'birth_date' => fake()->dateTimeBetween('-50 years', '-21 years'),
+            'start_working_date' => fake()->dateTimeBetween('-5 years', '-1 month'),
+            'salary' => fake()->randomFloat(2, 800, 6000),
+            'salary_currency' => CurrencyEnum::USD,
+            'is_freelance' => false,
+            'is_remote' => false,
+            'status' => UserStatus::Active,
+            'password' => 'password',
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+    public function inactive(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+        return $this->state(['status' => UserStatus::Inactive]);
+    }
+
+    public function terminated(): static
+    {
+        return $this->state(fn () => [
+            'status' => UserStatus::Terminated,
+            'end_working_date' => fake()->dateTimeBetween('-1 month', 'now'),
+            'termination_reason' => fake()->sentence(),
         ]);
+    }
+
+    public function remote(): static
+    {
+        return $this->state(['is_remote' => true]);
+    }
+
+    public function freelance(): static
+    {
+        return $this->state(['is_freelance' => true]);
     }
 }

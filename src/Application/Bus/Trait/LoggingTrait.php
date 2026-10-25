@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Bus\Trait;
 
 use Illuminate\Support\Facades\Log;
@@ -13,10 +15,10 @@ trait LoggingTrait
             ? $instance->getCreatedAt()->format('Y-m-d H:i:s')
             : 'N/A';
 
-        Log::driver('bus')->error(sprintf(
-            "%s Execution: %s, ID: %s, CreatedAt: %s",
+        Log::channel('bus')->info(sprintf(
+            '%s Execution: %s, ID: %s, CreatedAt: %s',
             $type,
-            get_class($instance),
+            $instance::class,
             $id,
             $createdAt
         ));

@@ -130,7 +130,7 @@ return [
         'bus' => [
             'driver' => 'daily',
             'path' => storage_path('logs/bus.log'),
-            'level' => 'error',
+            'level' => 'info',
             'days' => 14,
             'replace_placeholders' => true,
         ],
