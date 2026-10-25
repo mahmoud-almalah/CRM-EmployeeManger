@@ -1,8 +1,13 @@
 <?php
 
+use Database\Seeders\RolesAndPermissionsSeeder;
+use Domain\User\Entities\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Passport;
+use Shared\Enums\RoleName;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-pest()->extend(Tests\TestCase::class)
+pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
 
@@ -52,7 +57,7 @@ function organization(): array
     $countryId = DB::table('countries')->insertGetId(['name' => 'Egypt', 'phone_code' => '+20', 'currency' => 'EGP', 'created_at' => $now, 'updated_at' => $now]);
     $cityId = DB::table('cities')->insertGetId(['country_id' => $countryId, 'name' => 'Cairo', 'created_at' => $now, 'updated_at' => $now]);
     $positionId = DB::table('positions')->insertGetId(['name' => 'Developer', 'created_at' => $now, 'updated_at' => $now]);
-    $managerId = Domain\User\Entities\User::factory()->create()->id;
+    $managerId = User::factory()->create()->id;
     $workAreaId = DB::table('work_areas')->insertGetId([
         'name' => 'Head office', 'address' => '1 Main St', 'city' => $cityId, 'country' => $countryId,
         'manager_id' => $managerId, 'created_at' => $now, 'updated_at' => $now,
@@ -92,12 +97,12 @@ function userPayload(array $overrides = []): array
 /**
  * Signs in as a user holding the given role.
  */
-function actingAsRole(Shared\Enums\RoleName $role): Domain\User\Entities\User
+function actingAsRole(RoleName $role): User
 {
-    test()->seed(Database\Seeders\RolesAndPermissionsSeeder::class);
+    test()->seed(RolesAndPermissionsSeeder::class);
 
-    $user = Domain\User\Entities\User::factory()->create()->assignRole($role->value);
-    Laravel\Passport\Passport::actingAs($user, [], 'api');
+    $user = User::factory()->create()->assignRole($role->value);
+    Passport::actingAs($user, [], 'api');
 
     return $user;
 }

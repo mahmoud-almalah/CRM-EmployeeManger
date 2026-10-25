@@ -1,6 +1,7 @@
 <?php
 
 use Domain\User\Entities\User;
+use Domain\User\ValueObjects\EmailObject;
 
 beforeEach(fn () => setUpPassport());
 
@@ -20,7 +21,7 @@ it('signs in with the username and returns a bearer token', function () {
 });
 
 it('signs in with the email, ignoring case', function () {
-    User::factory()->create(['email' => new Domain\User\ValueObjects\EmailObject('mahmoud@example.com')]);
+    User::factory()->create(['email' => new EmailObject('mahmoud@example.com')]);
 
     login('Mahmoud@Example.com')->assertOk();
 });
