@@ -22,9 +22,7 @@ yarn-error.log
 /.vscode
 /.zed
 
-# Project exclude paths
-/storage/app/
-/storage/framework/
+
 
 # Auto Claude data directory
 .auto-claude/

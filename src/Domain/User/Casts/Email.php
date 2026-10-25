@@ -1,40 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\User\Casts;
 
-use Application\User\ValueObjects\EmailObject;
+use Domain\User\ValueObjects\EmailObject;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
+/**
+ * Stored as the plain address so the unique index and lookups keep working.
+ *
+ * @implements CastsAttributes<EmailObject, mixed>
+ */
 final class Email implements CastsAttributes
 {
-    public function get(Model $model, string $key, mixed $value, array $attributes): EmailObject
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?EmailObject
     {
-        $email = json_decode($value, true, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
-
-        return new EmailObject(
-            email: $email['email'],
-        );
+        return $value === null ? null : new EmailObject((string) $value);
     }
 
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?string
     {
-        if (is_string($value)) {
-            return $value;
-        }
-
-        if (!$value instanceof EmailObject) {
-            throw new InvalidArgumentException(
-                message: 'Value must be an instance of Email Object.',
-            );
-        }
-
-        return json_encode(
-            value: [
-                $key => $value,
-            ],
-            flags: JSON_THROW_ON_ERROR,
-        );
+        return match (true) {
+            $value === null => null,
+            is_string($value) => (string) new EmailObject($value),
+            $value instanceof EmailObject => (string) $value,
+            default => throw new InvalidArgumentException('Value must be an EmailObject or a string.'),
+        };
     }
 }

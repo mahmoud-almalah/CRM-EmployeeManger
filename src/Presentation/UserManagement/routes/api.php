@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Presentation\UserManagement\Controllers\UserController;
 
-Route::get('/user', fn(Request $request) => $request->user())->middleware('auth:sanctum');
-
-Route::controller(UserController::class)->group(function (): void {
-    Route::post('users/create', 'store');
-    Route::put('users/{id}/update', 'update');
-    Route::get('users', 'index');
-    Route::get('users/{id}', 'show');
+Route::middleware('auth:api')->controller(UserController::class)->group(function (): void {
+    Route::get('users', 'index')->middleware('permission:users.view,api');
+    Route::get('users/{id}', 'show')->middleware('permission:users.view,api');
+    Route::post('users', 'store')->middleware('permission:users.create,api');
+    Route::put('users/{id}', 'update')->middleware('permission:users.update,api');
+    Route::delete('users/{id}', 'destroy')->middleware('permission:users.delete,api');
 });

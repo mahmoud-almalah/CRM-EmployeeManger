@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     App\Providers\AppServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
     Illuminate\Translation\TranslationServiceProvider::class,
@@ -8,4 +8,4 @@ return array(
 
     Application\Providers\ApplicationServiceProvider::class,
     Infrastructure\Providers\InfrastructureServiceProvider::class,
-);
+];

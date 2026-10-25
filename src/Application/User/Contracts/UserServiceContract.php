@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\User\Contracts;
 
 use Application\User\Data\UserData;
-use Illuminate\Database\Eloquent\Collection;
+use Domain\User\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 interface UserServiceContract
 {
@@ -12,11 +15,11 @@ interface UserServiceContract
 
     public function all(array $with = []): Collection;
 
-    public function find(string $id, array $with = []): null|object;
+    public function find(string $id, array $with = []): User;
 
-    public function create(UserData $data, array $override = []): void;
+    public function create(UserData $data, array $override = []): User;
 
-    public function update(string $id, UserData $data): void;
+    public function update(string $id, UserData $data, array $override = []): User;
 
     public function delete(string $id): void;
 }

@@ -4,25 +4,18 @@ declare(strict_types=1);
 
 namespace Infrastructure\Providers;
 
+use Application\User\Contracts\UserRepositoryContract;
 use Illuminate\Support\ServiceProvider;
+use Infrastructure\User\Persistence\Repositories\UserRepository;
 
 class InfrastructureServiceProvider extends ServiceProvider
 {
-    public $singletons = [
-
+    /**
+     * Contract => implementation. Application code only knows the contract.
+     *
+     * @var array<class-string, class-string>
+     */
+    public $bindings = [
+        UserRepositoryContract::class => UserRepository::class,
     ];
-
-    public function register(): void {}
-
-    public function boot(): void
-    {
-        $this->registerSingletons();
-    }
-
-    protected function registerSingletons(): void
-    {
-        foreach ($this->singletons as $interface => $implementation) {
-            $this->app->singleton($interface, $implementation);
-        }
-    }
 }
