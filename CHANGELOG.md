@@ -8,6 +8,9 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - Upgraded to Laravel 12 and Passport 13. `composer audit` reported 59 advisories in 16 packages; every Laravel 11.x release up to 11.57 was affected by at least one, so the fix is the new major version. `composer audit` is now clean.
 - Added `SECURITY.md`, Dependabot updates for composer and GitHub Actions, and a dependency audit job in CI that also runs weekly.
 
+### Added
+- MIT LICENSE file
+
 ### Changed
 - CI workflow runs with read-only permissions.
 
