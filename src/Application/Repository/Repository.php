@@ -38,9 +38,9 @@ abstract class Repository implements RepositoryInterface
         return $this->query()->with($with)->findOrFail($id);
     }
 
-    public function create(DataEntity $entity, array $override = []): void
+    public function create(DataEntity $entity, array $override = []): object
     {
-        $this->database->transaction(
+        return $this->database->transaction(
             callback: fn () => $this->query()->create(
                 array_merge($entity->toArray(), $override),
             ),
@@ -48,10 +48,15 @@ abstract class Repository implements RepositoryInterface
         );
     }
 
-    public function update(string $id, DataEntity $entity): void
+    public function update(string $id, DataEntity $entity, array $override = []): object
     {
-        $this->database->transaction(
-            callback: fn () => $this->query()->findOrFail($id)->update($entity->toArray()),
+        return $this->database->transaction(
+            callback: function () use ($id, $entity, $override) {
+                $model = $this->query()->findOrFail($id);
+                $model->update(array_merge($entity->toArray(), $override));
+
+                return $model;
+            },
             attempts: 3,
         );
     }
