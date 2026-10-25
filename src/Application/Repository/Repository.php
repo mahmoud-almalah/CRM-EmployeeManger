@@ -51,7 +51,7 @@ abstract class Repository implements RepositoryInterface
     public function update(string $id, DataEntity $entity): void
     {
         $this->database->transaction(
-            callback: fn () => $this->query()->where('id', $id)->update($entity->toArray()),
+            callback: fn () => $this->query()->findOrFail($id)->update($entity->toArray()),
             attempts: 3,
         );
     }
@@ -59,7 +59,7 @@ abstract class Repository implements RepositoryInterface
     public function delete(string $id): void
     {
         $this->database->transaction(
-            callback: fn () => $this->query()->where('id', $id)->delete(),
+            callback: fn () => $this->query()->findOrFail($id)->delete(),
             attempts: 3,
         );
     }

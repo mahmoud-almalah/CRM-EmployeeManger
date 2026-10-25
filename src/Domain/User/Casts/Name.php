@@ -1,42 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\User\Casts;
 
-use Application\User\ValueObjects\NameObject;
+use Domain\User\ValueObjects\NameObject;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
+/**
+ * Stored as JSON: {"first": "...", "middle": "...", "last": "..."}.
+ *
+ * @implements CastsAttributes<NameObject, mixed>
+ */
 final class Name implements CastsAttributes
 {
-    public function get(Model $model, string $key, mixed $value, array $attributes): NameObject
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?NameObject
     {
-        $name = json_decode($value, true, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
+        if ($value === null) {
+            return null;
+        }
 
-        return new NameObject(
-            first: $name['name']['first'],
-            middle: $name['name']['middle'],
-            last: $name['name']['last'],
-        );
+        return NameObject::fromArray(json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR));
     }
 
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?string
     {
-        if (is_string($value)) {
-            return $value;
-        }
+        $name = match (true) {
+            $value === null => null,
+            is_array($value) => NameObject::fromArray($value),
+            $value instanceof NameObject => $value,
+            default => throw new InvalidArgumentException('Value must be a NameObject or an array.'),
+        };
 
-        if (! $value instanceof NameObject) {
-            throw new InvalidArgumentException(
-                message: 'Value must be an instance of Name Object',
-            );
-        }
-
-        return json_encode(
-            value: [
-                $key => $value,
-            ],
-            flags: JSON_THROW_ON_ERROR,
-        );
+        return $name === null ? null : json_encode($name->toArray(), JSON_THROW_ON_ERROR);
     }
 }
