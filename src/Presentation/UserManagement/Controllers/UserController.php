@@ -10,13 +10,14 @@ use Application\User\Commands\CreateUserCommand;
 use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
 use Application\User\Contracts\UserServiceContract;
-use Application\User\Queries\GetAllUsersQuery;
 use Domain\User\Entities\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Presentation\Controller;
 use Presentation\UserManagement\Requests\CreateUserRequest;
+use Presentation\UserManagement\Requests\ListUsersRequest;
 use Presentation\UserManagement\Requests\UpdateUserRequest;
 use Presentation\UserManagement\Resources\UserResource;
 
@@ -28,9 +29,9 @@ class UserController extends Controller
         protected CommandBusContract $commandBus,
     ) {}
 
-    public function index()
+    public function index(ListUsersRequest $request): AnonymousResourceCollection
     {
-        return $this->queryBus->ask(new GetAllUsersQuery);
+        return UserResource::collection($this->queryBus->ask($request->toQuery()));
     }
 
     public function show(string $id)

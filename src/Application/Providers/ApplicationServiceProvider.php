@@ -19,8 +19,8 @@ use Application\User\Commands\CreateUserCommand;
 use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
 use Application\User\Contracts\UserServiceContract;
-use Application\User\Queries\GetAllUsersQuery;
-use Application\User\QueriesHandlers\GetAllUsersQueryHandler;
+use Application\User\Queries\GetUsersQuery;
+use Application\User\QueriesHandlers\GetUsersQueryHandler;
 use Application\User\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -55,7 +55,7 @@ class ApplicationServiceProvider extends ServiceProvider
     protected function registerQueryHandlers(): void
     {
         $this->app->make(QueryBusContract::class)->register([
-            GetAllUsersQuery::class => GetAllUsersQueryHandler::class,
+            GetUsersQuery::class => GetUsersQueryHandler::class,
         ]);
     }
 }
