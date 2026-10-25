@@ -48,6 +48,14 @@ final class User extends Authenticatable
 
     protected $table = self::TABLE;
 
+    /**
+     * Spatie reads this to decide which guard the user's roles belong to.
+     */
+    public function guardName(): string
+    {
+        return 'api';
+    }
+
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
