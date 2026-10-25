@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\User\Services;
 
 use Application\User\Contracts\UserRepositoryContract;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Data\UserData;
+use Domain\User\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class UserService implements UserServiceContract
 {
     public function __construct(
-        protected UserRepositoryContract $repository
+        private readonly UserRepositoryContract $repository,
     ) {}
 
     public function query(): Builder
@@ -21,39 +24,29 @@ final class UserService implements UserServiceContract
 
     public function all(array $with = []): Collection
     {
-        return $this->repository->all(
-            with: $with
-        );
+        return $this->repository->all($with);
     }
 
-    public function find(string $id, array $with = []): ?object
+    public function find(string $id, array $with = []): User
     {
-        return $this->repository->find(
-            id: $id,
-            with: $with
-        );
+        /** @var User */
+        return $this->repository->find($id, $with);
     }
 
-    public function create(UserData $data, array $override = []): void
+    public function create(UserData $data, array $override = []): User
     {
-        $this->repository->create(
-            entity: $data,
-            override: $override
-        );
+        /** @var User */
+        return $this->repository->create($data, $override);
     }
 
-    public function update(string $id, UserData $data): void
+    public function update(string $id, UserData $data, array $override = []): User
     {
-        $this->repository->update(
-            id: $id,
-            entity: $data
-        );
+        /** @var User */
+        return $this->repository->update($id, $data, $override);
     }
 
     public function delete(string $id): void
     {
-        $this->repository->delete(
-            id: $id
-        );
+        $this->repository->delete($id);
     }
 }

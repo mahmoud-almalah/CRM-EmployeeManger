@@ -16,9 +16,9 @@ interface RepositoryInterface
 
     public function find(string $id, array $with = []): ?object;
 
-    public function create(DataEntity $entity, array $override = []): void;
+    public function create(DataEntity $entity, array $override = []): object;
 
-    public function update(string $id, DataEntity $entity): void;
+    public function update(string $id, DataEntity $entity, array $override = []): object;
 
     public function delete(string $id): void;
 }

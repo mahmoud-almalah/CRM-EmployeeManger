@@ -12,6 +12,8 @@ use Application\Bus\Command\IlluminateCommandBus;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\Query\IlluminateQueryBus;
+use Application\User\CommandHandlers\CreateUserCommandHandler;
+use Application\User\Commands\CreateUserCommand;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Queries\GetAllUsersQuery;
 use Application\User\QueriesHandlers\GetAllUsersQueryHandler;
@@ -40,6 +42,7 @@ class ApplicationServiceProvider extends ServiceProvider
         $this->app->make(CommandBusContract::class)->register([
             LoginCommand::class => LoginCommandHandler::class,
             LogoutCommand::class => LogoutCommandHandler::class,
+            CreateUserCommand::class => CreateUserCommandHandler::class,
         ]);
     }
 
