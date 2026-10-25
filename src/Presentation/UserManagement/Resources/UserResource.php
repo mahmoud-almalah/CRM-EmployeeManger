@@ -32,6 +32,7 @@ final class UserResource extends JsonResource
             'is_freelance' => $this->is_freelance,
             'start_working_date' => $this->start_working_date->toDateString(),
             'end_working_date' => $this->end_working_date?->toDateString(),
+            'roles' => $this->whenLoaded('roles', fn () => $this->roles->pluck('name')->values()),
         ];
     }
 }

@@ -9,7 +9,7 @@ use Application\Bus\Contracts\QueryBusContract;
 use Application\User\Commands\CreateUserCommand;
 use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
-use Application\User\Contracts\UserServiceContract;
+use Application\User\Queries\GetUserQuery;
 use Domain\User\Entities\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +24,6 @@ use Presentation\UserManagement\Resources\UserResource;
 class UserController extends Controller
 {
     public function __construct(
-        protected UserServiceContract $userService,
         protected QueryBusContract $queryBus,
         protected CommandBusContract $commandBus,
     ) {}
@@ -34,9 +33,14 @@ class UserController extends Controller
         return UserResource::collection($this->queryBus->ask($request->toQuery()));
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id): UserResource
     {
-        return $this->userService->find($id);
+        $include = $request->query('include');
+
+        /** @var User $user */
+        $user = $this->queryBus->ask(new GetUserQuery($id, is_string($include) ? explode(',', $include) : []));
+
+        return new UserResource($user);
     }
 
     public function store(CreateUserRequest $request): JsonResponse
