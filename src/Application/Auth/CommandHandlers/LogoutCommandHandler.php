@@ -8,6 +8,7 @@ use Application\Auth\Commands\LogoutCommand;
 use Application\Bus\Command\Command;
 use Application\Bus\Command\CommandHandler;
 use InvalidArgumentException;
+use Laravel\Passport\AccessToken;
 
 final class LogoutCommandHandler extends CommandHandler
 {
@@ -17,7 +18,11 @@ final class LogoutCommandHandler extends CommandHandler
             throw new InvalidArgumentException(sprintf('Expected %s, got %s.', LogoutCommand::class, $command::class));
         }
 
-        $command->user->token()?->revoke();
+        $token = $command->user->token();
+
+        if ($token instanceof AccessToken) {
+            $token->revoke();
+        }
 
         return null;
     }
