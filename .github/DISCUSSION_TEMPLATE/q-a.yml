@@ -1,0 +1,19 @@
+title: "[Question] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [README](https://github.com/mahmoud-almalah/employee-manager-api#readme), the [architecture guide](https://github.com/mahmoud-almalah/employee-manager-api/blob/develop/docs/architecture.md) and the [ADRs](https://github.com/mahmoud-almalah/employee-manager-api/tree/develop/docs/adr) first. For a bug, open an issue instead.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: What you have tried
+      description: Commands, requests, responses or the part of the code you are looking at.
+    validations:
+      required: false
