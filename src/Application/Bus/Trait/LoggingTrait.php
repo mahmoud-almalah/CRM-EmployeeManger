@@ -14,7 +14,7 @@ trait LoggingTrait
             : 'N/A';
 
         Log::driver('bus')->error(sprintf(
-            "%s Execution: %s, ID: %s, CreatedAt: %s",
+            '%s Execution: %s, ID: %s, CreatedAt: %s',
             $type,
             get_class($instance),
             $id,

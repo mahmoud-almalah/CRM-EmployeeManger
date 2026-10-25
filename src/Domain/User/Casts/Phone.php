@@ -25,7 +25,7 @@ final class Phone implements CastsAttributes
             return $value;
         }
 
-        if (!$value instanceof PhoneObject) {
+        if (! $value instanceof PhoneObject) {
             throw new InvalidArgumentException(
                 message: 'Value must be an instance of Phone Object',
             );

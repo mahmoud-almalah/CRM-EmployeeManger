@@ -12,8 +12,7 @@ final class UserService implements UserServiceContract
 {
     public function __construct(
         protected UserRepository $repository
-    ){
-    }
+    ) {}
 
     public function query(): Builder
     {
@@ -27,7 +26,7 @@ final class UserService implements UserServiceContract
         );
     }
 
-    public function find(string $id, array $with = []): null|object
+    public function find(string $id, array $with = []): ?object
     {
         return $this->repository->find(
             id: $id,

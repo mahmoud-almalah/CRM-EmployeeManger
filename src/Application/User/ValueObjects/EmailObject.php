@@ -8,8 +8,7 @@ final readonly class EmailObject
 {
     public function __construct(
         public string $email,
-    ) {
-    }
+    ) {}
 
     public function __toArray(): array
     {

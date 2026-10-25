@@ -9,12 +9,13 @@ use Ramsey\Uuid\Uuid;
 abstract class Command
 {
     protected string $id;
+
     protected \DateTimeImmutable $createdAt;
 
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable;
     }
 
     public function getId(): string

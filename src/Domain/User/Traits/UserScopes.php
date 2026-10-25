@@ -11,9 +11,6 @@ trait UserScopes
 {
     /**
      * Scope a query to only include active users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -22,9 +19,6 @@ trait UserScopes
 
     /**
      * Scope a query to only include inactive users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeInactive(Builder $query): Builder
     {
@@ -33,9 +27,6 @@ trait UserScopes
 
     /**
      * Scope a query to only include freelance users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeFreelance(Builder $query): Builder
     {
@@ -44,9 +35,6 @@ trait UserScopes
 
     /**
      * Scope a query to only include remote users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeRemote(Builder $query): Builder
     {
@@ -55,9 +43,6 @@ trait UserScopes
 
     /**
      * Scope a query to only include terminated users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeTerminated(Builder $query): Builder
     {
@@ -67,9 +52,6 @@ trait UserScopes
 
     /**
      * Scope a query to only include not terminated users.
-     *
-     * @param Builder $query
-     * @return Builder
      */
     public function scopeNotTerminated(Builder $query): Builder
     {
