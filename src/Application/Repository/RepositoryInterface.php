@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Application\Repository;
 
 use Application\Data\DataEntity;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * @property-read DatabaseManager $database
- * @property-read Builder $query
- */
 interface RepositoryInterface
 {
+    public function query(): Builder;
+
     public function all(array $with = []): Collection;
 
     public function find(string $id, array $with = []): ?object;

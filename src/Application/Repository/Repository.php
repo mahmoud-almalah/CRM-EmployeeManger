@@ -14,51 +14,35 @@ abstract class Repository implements RepositoryInterface
 {
     private readonly DatabaseManager $database;
 
-    private readonly Builder $query;
-
     public function __construct(
         private readonly Model $model,
     ) {
         $this->database = app('db');
-        $this->query = $this->model::query();
     }
 
+    /**
+     * A new query on every call, so filters from one call never leak into the next.
+     */
     public function query(): Builder
     {
-        return $this->query;
-    }
-
-    public function select(array $columns): Repository
-    {
-        $this->query->select($columns);
-
-        return $this;
+        return $this->model->newQuery();
     }
 
     public function all(array $with = []): Collection
     {
-        return $this->query->with(
-            relations: $with
-        )->get();
+        return $this->query()->with($with)->get();
     }
 
     public function find(string $id, array $with = []): ?object
     {
-        return $this->query->with(
-            relations: $with,
-        )->findOrFail(
-            id: $id,
-        );
+        return $this->query()->with($with)->findOrFail($id);
     }
 
     public function create(DataEntity $entity, array $override = []): void
     {
         $this->database->transaction(
-            callback: fn () => $this->query->create(
-                attributes: array_merge(
-                    $entity->toArray(),
-                    $override,
-                ),
+            callback: fn () => $this->query()->create(
+                array_merge($entity->toArray(), $override),
             ),
             attempts: 3,
         );
@@ -67,13 +51,7 @@ abstract class Repository implements RepositoryInterface
     public function update(string $id, DataEntity $entity): void
     {
         $this->database->transaction(
-            callback: fn () => $this->query->where(
-                column: 'id',
-                operator: '=',
-                value: $id,
-            )->update(
-                values: $entity->toArray(),
-            ),
+            callback: fn () => $this->query()->where('id', $id)->update($entity->toArray()),
             attempts: 3,
         );
     }
@@ -81,11 +59,7 @@ abstract class Repository implements RepositoryInterface
     public function delete(string $id): void
     {
         $this->database->transaction(
-            callback: fn () => $this->query->where(
-                column: 'id',
-                operator: '=',
-                value: $id,
-            )->delete(),
+            callback: fn () => $this->query()->where('id', $id)->delete(),
             attempts: 3,
         );
     }
