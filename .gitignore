@@ -25,3 +25,9 @@ yarn-error.log
 # Project exclude paths
 /storage/app/
 /storage/framework/
+
+# Auto Claude data directory
+.auto-claude/
+
+# OpenSSL random seed
+.rnd
