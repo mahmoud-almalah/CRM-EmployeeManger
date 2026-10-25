@@ -19,7 +19,9 @@ use Application\User\Commands\CreateUserCommand;
 use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
 use Application\User\Contracts\UserServiceContract;
+use Application\User\Queries\GetUserQuery;
 use Application\User\Queries\GetUsersQuery;
+use Application\User\QueriesHandlers\GetUserQueryHandler;
 use Application\User\QueriesHandlers\GetUsersQueryHandler;
 use Application\User\Services\UserService;
 use Illuminate\Support\ServiceProvider;
@@ -56,6 +58,7 @@ class ApplicationServiceProvider extends ServiceProvider
     {
         $this->app->make(QueryBusContract::class)->register([
             GetUsersQuery::class => GetUsersQueryHandler::class,
+            GetUserQuery::class => GetUserQueryHandler::class,
         ]);
     }
 }
