@@ -42,7 +42,6 @@ final class User extends Authenticatable
         'is_freelance',
         'is_remote',
         'status',
-        'role',
         'image',
         'password',
         'password_changed_at',
