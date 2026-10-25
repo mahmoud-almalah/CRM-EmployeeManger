@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/mahmoud-almalah/employee-manager-api/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoud-almalah/employee-manager-api/actions/workflows/ci.yml)
 
-A REST API for managing employees (formerly CRM-EmployeeManger): accounts and roles, organization structure, attendance, payroll, meetings and the end of employment. Built with Laravel 11 as an experiment in **Clean Architecture and DDD**, and run like a team project: every change starts from an issue on a [project board](https://github.com/users/mahmoud-almalah/projects/5), goes through a pull request and CI, and ships in a sprint.
+A REST API for managing employees (formerly CRM-EmployeeManger): accounts and roles, organization structure, attendance, payroll, meetings and the end of employment. Built with Laravel 12 as an experiment in **Clean Architecture and DDD**, and run like a team project: every change starts from an issue on a [project board](https://github.com/users/mahmoud-almalah/projects/5), goes through a pull request and CI, and ships in a sprint.
 
 ## Status
 
@@ -92,6 +92,10 @@ CI runs the same three on every pull request.
 - Commits follow Conventional Commits; PRs are squash-merged into `develop` once CI is green.
 - Sprints end with a `develop → staging → master` release, a tag, and a review and retrospective in [`docs/agile`](docs/agile).
 - Questions and ideas go in [Discussions](https://github.com/mahmoud-almalah/employee-manager-api/discussions); bugs and planned work are issues on the board.
+
+## Security
+
+Report vulnerabilities privately through the repository's Security tab; see [SECURITY.md](SECURITY.md). Dependabot and a weekly `composer audit` in CI watch the dependencies, and secret scanning is enabled.
 
 ## How this was built
 

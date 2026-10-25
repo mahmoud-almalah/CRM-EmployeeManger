@@ -5,14 +5,21 @@ on:
     branches: [develop, staging, master]
   push:
     branches: [develop, staging, master]
+  schedule:
+    # Weekly, so a newly published advisory shows up even when nobody pushes.
+    - cron: "0 6 * * 1"
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   quality:
     name: Lint, static analysis, tests
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     env:
       DB_CONNECTION: sqlite
@@ -46,3 +53,17 @@ jobs:
 
       - name: Pest
         run: vendor/bin/pest
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Audit locked dependencies
+        run: composer audit --locked

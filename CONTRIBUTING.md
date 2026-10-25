@@ -30,7 +30,7 @@ Hotfixes use `hotfix/<issue>-<slug>` from `master` and are merged back into `dev
 - Acceptance criteria met
 - Pest tests added for new behaviour
 - `pint`, `phpstan` and `pest` pass in CI
-- Docs and `CHANGELOG.md` updated where relevant
+- Docs, `CHANGELOG.md` and the [wiki](https://github.com/mahmoud-almalah/employee-manager-api/wiki) updated where relevant
 - PR squash-merged into `develop`
 
 ## Questions and ideas
@@ -41,6 +41,10 @@ Use [Discussions](https://github.com/mahmoud-almalah/employee-manager-api/discus
 - Dependencies point inward: Presentation → Application → Domain. Infrastructure implements contracts defined in Application.
 - Controllers never touch Eloquent directly; they dispatch commands and ask queries through the buses.
 - Business rules live in the Domain and Application layers, not in controllers or migrations.
+
+## Security
+
+Never put secrets in commits, issues or discussions. Report vulnerabilities as described in [SECURITY.md](SECURITY.md). `composer audit` must pass; if a dependency has an advisory with no fix, say so in the pull request.
 
 ## Local checks
 ```bash
