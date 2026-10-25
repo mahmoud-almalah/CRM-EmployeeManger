@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Application\Repository;
 
 use Application\Data\DataEntity;
-use Domain\User\Entities\User;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,12 +13,12 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Repository implements RepositoryInterface
 {
     private readonly DatabaseManager $database;
+
     private readonly Builder $query;
 
     public function __construct(
         private readonly Model $model,
-    )
-    {
+    ) {
         $this->database = app('db');
         $this->query = $this->model::query();
     }
@@ -55,7 +54,7 @@ abstract class Repository implements RepositoryInterface
     public function create(DataEntity $entity, array $override = []): void
     {
         $this->database->transaction(
-            callback: fn() => $this->query->create(
+            callback: fn () => $this->query->create(
                 attributes: array_merge(
                     $entity->toArray(),
                     $override,
@@ -68,7 +67,7 @@ abstract class Repository implements RepositoryInterface
     public function update(string $id, DataEntity $entity): void
     {
         $this->database->transaction(
-            callback: fn() => $this->query->where(
+            callback: fn () => $this->query->where(
                 column: 'id',
                 operator: '=',
                 value: $id,
@@ -82,7 +81,7 @@ abstract class Repository implements RepositoryInterface
     public function delete(string $id): void
     {
         $this->database->transaction(
-            callback: fn() => $this->query->where(
+            callback: fn () => $this->query->where(
                 column: 'id',
                 operator: '=',
                 value: $id,

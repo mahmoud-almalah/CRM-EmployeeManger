@@ -19,9 +19,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 final class User extends Authenticatable
 {
-    use HasApiTokens, UserScopes,
-        UserRelations, UserMutators,
-        HasUuids, HasRoles;
+    use HasApiTokens, HasRoles,
+        HasUuids, UserMutators,
+        UserRelations, UserScopes;
 
     public const TABLE = 'users';
 

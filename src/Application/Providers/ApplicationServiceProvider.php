@@ -46,6 +46,4 @@ class ApplicationServiceProvider extends ServiceProvider
             GetAllUsersQuery::class => GetAllUsersQueryHandler::class,
         ]);
     }
-
-
 }

@@ -26,7 +26,7 @@ final class Name implements CastsAttributes
             return $value;
         }
 
-        if (!$value instanceof NameObject) {
+        if (! $value instanceof NameObject) {
             throw new InvalidArgumentException(
                 message: 'Value must be an instance of Name Object',
             );

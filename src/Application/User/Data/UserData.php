@@ -13,42 +13,41 @@ use Shared\Enums\UserStatus;
 final class UserData extends DataEntity
 {
     public function __construct(
-        protected ?string $id = null,
+        protected ?string $id,
         protected NameObject $name,
         protected string $username,
         protected EmailObject $email,
         protected PhoneObject $phone,
-        protected ?string $address = null,
+        protected ?string $address,
         protected int $country_id,
         protected int $city_id,
         protected DateTimeInterface $birth_date,
         protected DateTimeInterface $start_working_date,
-        protected ?DateTimeInterface $end_working_date = null,
-        protected ?string $termination_reason = null,
+        protected ?DateTimeInterface $end_working_date,
+        protected ?string $termination_reason,
         protected int $position_id,
         protected int $work_area_id,
         protected int $work_shift_id,
         protected float $salary,
-        protected CurrencyEnum $salary_currency = CurrencyEnum::USD,
-        protected bool $is_freelance = false,
-        protected bool $is_remote = false,
+        protected CurrencyEnum $salary_currency,
+        protected bool $is_freelance,
+        protected bool $is_remote,
         protected UserStatus $status,
         protected int $role,
-        protected ?string $image = null,
+        protected ?string $image,
         protected string $password,
         protected ?DateTimeInterface $password_changed_at = null,
         protected ?array $additional_info = null,
-    ) {
-    }
+    ) {}
 
     public function toArray(): array
     {
         return [
             'id' => $this->id,
-            'name' => (string)$this->name,
+            'name' => (string) $this->name,
             'username' => $this->username,
-            'email' => (string)$this->email,
-            'phone' => (string)$this->phone,
+            'email' => (string) $this->email,
+            'phone' => (string) $this->phone,
             'address' => $this->address,
             'country_id' => $this->country_id,
             'city_id' => $this->city_id,

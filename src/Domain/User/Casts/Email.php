@@ -24,7 +24,7 @@ final class Email implements CastsAttributes
             return $value;
         }
 
-        if (!$value instanceof EmailObject) {
+        if (! $value instanceof EmailObject) {
             throw new InvalidArgumentException(
                 message: 'Value must be an instance of Email Object.',
             );

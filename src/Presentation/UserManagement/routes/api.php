@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Presentation\UserManagement\Controllers\UserController;
 
-Route::get('/user', fn(Request $request) => $request->user())->middleware('auth:sanctum');
+Route::get('/user', fn (Request $request) => $request->user())->middleware('auth:sanctum');
 
 Route::controller(UserController::class)->group(function (): void {
     Route::post('users/create', 'store');

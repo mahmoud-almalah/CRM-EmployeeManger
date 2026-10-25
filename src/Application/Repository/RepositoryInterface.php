@@ -17,7 +17,7 @@ interface RepositoryInterface
 {
     public function all(array $with = []): Collection;
 
-    public function find(string $id, array $with = []): null|object;
+    public function find(string $id, array $with = []): ?object;
 
     public function create(DataEntity $entity, array $override = []): void;
 

@@ -15,8 +15,8 @@ trait BusMappingTrait
 
     public function resolveHandler(string $key): mixed
     {
-        if (!array_key_exists($key, $this->map)) {
-            error_log("Registered map: " . json_encode(array_keys($this->map), JSON_THROW_ON_ERROR));
+        if (! array_key_exists($key, $this->map)) {
+            error_log('Registered map: '.json_encode(array_keys($this->map), JSON_THROW_ON_ERROR));
             throw new \InvalidArgumentException("No handler registered for key: $key");
         }
 

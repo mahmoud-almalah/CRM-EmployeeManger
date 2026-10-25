@@ -3,6 +3,7 @@
 namespace Application\User\ValueObjects;
 
 use Illuminate\Support\Str;
+
 use function json_encode;
 
 final readonly class PhoneObject
@@ -10,9 +11,7 @@ final readonly class PhoneObject
     public function __construct(
         public string $number,
         public string $countryCode,
-    )
-    {
-    }
+    ) {}
 
     public function __toArray(): array
     {

@@ -10,8 +10,7 @@ final readonly class NameObject
         public string $first,
         public ?string $middle,
         public ?string $last,
-    ) {
-    }
+    ) {}
 
     public function __toArray(): array
     {

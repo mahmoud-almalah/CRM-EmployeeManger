@@ -3,8 +3,8 @@
 namespace Application\User\Contracts;
 
 use Application\User\Data\UserData;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 interface UserServiceContract
 {
@@ -12,7 +12,7 @@ interface UserServiceContract
 
     public function all(array $with = []): Collection;
 
-    public function find(string $id, array $with = []): null|object;
+    public function find(string $id, array $with = []): ?object;
 
     public function create(UserData $data, array $override = []): void;
 
