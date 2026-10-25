@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Application\Providers;
 
+use Application\Auth\CommandHandlers\LoginCommandHandler;
+use Application\Auth\CommandHandlers\LogoutCommandHandler;
+use Application\Auth\Commands\LoginCommand;
+use Application\Auth\Commands\LogoutCommand;
 use Application\Bus\Command\IlluminateCommandBus;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
@@ -33,16 +37,15 @@ class ApplicationServiceProvider extends ServiceProvider
 
     protected function registerCommandHandlers(): void
     {
-        $commandBus = app(CommandBusContract::class);
-        $commandBus->register([
-
+        $this->app->make(CommandBusContract::class)->register([
+            LoginCommand::class => LoginCommandHandler::class,
+            LogoutCommand::class => LogoutCommandHandler::class,
         ]);
     }
 
     protected function registerQueryHandlers(): void
     {
-        $queryBus = app(QueryBusContract::class);
-        $queryBus->register([
+        $this->app->make(QueryBusContract::class)->register([
             GetAllUsersQuery::class => GetAllUsersQueryHandler::class,
         ]);
     }

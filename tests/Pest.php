@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 pest()->extend(Tests\TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
+
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * Passport needs signing keys and a personal access client before it can
+ * issue a token. Both are created here so tests do not depend on a local setup.
+ */
+function setUpPassport(): void
+{
+    Artisan::call('passport:keys');
+    Artisan::call('passport:client', [
+        '--personal' => true,
+        '--name' => 'Testing personal access client',
+        '--provider' => 'users',
+    ]);
+}

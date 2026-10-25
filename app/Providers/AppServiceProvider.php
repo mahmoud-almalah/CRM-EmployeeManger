@@ -3,36 +3,19 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * All the container bindings that should be registered.
-     *
-     * @var array
-     */
-    public $bindings = [];
-
-    /**
-     * All the container singletons that should be registered.
-     *
-     * @var array
-     */
-    public $singletons = [];
-
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }
