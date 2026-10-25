@@ -12,7 +12,7 @@ it('filters inactive users on the status column', function () {
 it('keeps the not-terminated condition grouped when chained', function () {
     $query = User::query()->remote()->notTerminated();
 
-    expect($query->toSql())->toBe('select * from "users" where "is_remote" = ? and ("status" != ?)')
+    expect($query->toSql())->toContain('"is_remote" = ? and ("status" != ?)')
         ->and($query->getBindings())->toBe([true, 'terminated']);
 });
 

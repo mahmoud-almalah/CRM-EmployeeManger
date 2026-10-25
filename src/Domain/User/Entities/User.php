@@ -16,6 +16,7 @@ use Domain\User\ValueObjects\NameObject;
 use Domain\User\ValueObjects\PhoneObject;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
@@ -40,8 +41,8 @@ use Spatie\Permission\Traits\HasRoles;
  */
 final class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles,
-        HasUuids, UserMutators,
+    use HasApiTokens, HasFactory, HasRoles, HasUuids,
+        SoftDeletes, UserMutators,
         UserRelations, UserScopes;
 
     public const TABLE = 'users';

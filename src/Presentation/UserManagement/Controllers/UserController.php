@@ -7,11 +7,14 @@ namespace Presentation\UserManagement\Controllers;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\User\Commands\CreateUserCommand;
+use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Queries\GetAllUsersQuery;
 use Domain\User\Entities\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Presentation\Controller;
 use Presentation\UserManagement\Requests\CreateUserRequest;
 use Presentation\UserManagement\Requests\UpdateUserRequest;
@@ -49,5 +52,12 @@ class UserController extends Controller
         $user = $this->commandBus->dispatch(new UpdateUserCommand($id, $request->toData(), $request->newRole()));
 
         return new UserResource($user);
+    }
+
+    public function destroy(Request $request, string $id): Response
+    {
+        $this->commandBus->dispatch(new DeleteUserCommand($id, (string) $request->user()->getAuthIdentifier()));
+
+        return response()->noContent();
     }
 }

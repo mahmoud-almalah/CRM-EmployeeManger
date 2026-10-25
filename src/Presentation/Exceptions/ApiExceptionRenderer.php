@@ -6,6 +6,7 @@ namespace Presentation\Exceptions;
 
 use Application\Auth\Exceptions\AccountNotActiveException;
 use Application\Auth\Exceptions\InvalidCredentialsException;
+use Application\User\Exceptions\CannotDeleteOwnAccountException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,6 +46,7 @@ final class ApiExceptionRenderer
             $e instanceof AuthenticationException => self::json('Unauthenticated.', 401),
             $e instanceof InvalidCredentialsException => self::json($e->getMessage(), 401),
             $e instanceof AccountNotActiveException => self::json($e->getMessage(), 403),
+            $e instanceof CannotDeleteOwnAccountException => self::json($e->getMessage(), 409),
             $e instanceof AuthorizationException => self::json($e->getMessage() ?: 'This action is unauthorized.', 403),
             $e instanceof HttpExceptionInterface => self::json(
                 $e->getMessage() !== '' ? $e->getMessage() : 'HTTP error.',

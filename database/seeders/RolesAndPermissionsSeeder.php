@@ -70,7 +70,8 @@ class RolesAndPermissionsSeeder extends Seeder
             RoleName::Admin->value => $this->allPermissions(),
 
             RoleName::Hr->value => [
-                ...$this->crud('users', 'positions', 'holidays', 'salary-increments', 'payments', 'insurances'),
+                ...$this->crud('positions', 'holidays', 'salary-increments', 'payments', 'insurances'),
+                'users.view', 'users.create', 'users.update',
                 ...$this->only('view', 'countries', 'cities', 'work-areas', 'work-shifts', 'supervisors', 'expenses'),
                 'attendance.view', 'attendance.create', 'attendance.update',
                 'terminations.view', 'terminations.create', 'terminations.update', 'terminations.approve',

@@ -13,8 +13,10 @@ use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\Query\IlluminateQueryBus;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
+use Application\User\CommandHandlers\DeleteUserCommandHandler;
 use Application\User\CommandHandlers\UpdateUserCommandHandler;
 use Application\User\Commands\CreateUserCommand;
+use Application\User\Commands\DeleteUserCommand;
 use Application\User\Commands\UpdateUserCommand;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Queries\GetAllUsersQuery;
@@ -46,6 +48,7 @@ class ApplicationServiceProvider extends ServiceProvider
             LogoutCommand::class => LogoutCommandHandler::class,
             CreateUserCommand::class => CreateUserCommandHandler::class,
             UpdateUserCommand::class => UpdateUserCommandHandler::class,
+            DeleteUserCommand::class => DeleteUserCommandHandler::class,
         ]);
     }
 
