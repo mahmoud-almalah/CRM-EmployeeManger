@@ -2,6 +2,15 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Security
+- Upgraded to Laravel 12 and Passport 13. `composer audit` reported 59 advisories in 16 packages; every Laravel 11.x release up to 11.57 was affected by at least one, so the fix is the new major version. `composer audit` is now clean.
+- Added `SECURITY.md`, Dependabot updates for composer and GitHub Actions, and a dependency audit job in CI that also runs weekly.
+
+### Changed
+- CI workflow runs with read-only permissions.
+
 ## [0.1.0] - 2026-10-25
 
 First release: the foundation and the User module (Sprint 1).
