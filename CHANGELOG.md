@@ -27,4 +27,4 @@ First release: the foundation and the User module (Sprint 1).
 - A fresh clone could not run `composer install` because `storage/framework` was ignored as a whole
 - The auth provider pointed at a model that does not exist
 
-[0.1.0]: https://github.com/mahmoud-almalah/CRM-EmployeeManger/releases/tag/v0.1.0
+[0.1.0]: https://github.com/mahmoud-almalah/employee-manager-api/releases/tag/v0.1.0

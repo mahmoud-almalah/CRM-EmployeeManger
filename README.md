@@ -1,8 +1,8 @@
-# CRM Employee Manager
+# Employee Manager API
 
-[![CI](https://github.com/mahmoud-almalah/CRM-EmployeeManger/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoud-almalah/CRM-EmployeeManger/actions/workflows/ci.yml)
+[![CI](https://github.com/mahmoud-almalah/employee-manager-api/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoud-almalah/employee-manager-api/actions/workflows/ci.yml)
 
-A REST API for managing employees: accounts and roles, organization structure, attendance, payroll, meetings and the end of employment. Built with Laravel 11 as an experiment in **Clean Architecture and DDD**, and run like a team project: every change starts from an issue on a [project board](https://github.com/users/mahmoud-almalah/projects/5), goes through a pull request and CI, and ships in a sprint.
+A REST API for managing employees (formerly CRM-EmployeeManger): accounts and roles, organization structure, attendance, payroll, meetings and the end of employment. Built with Laravel 11 as an experiment in **Clean Architecture and DDD**, and run like a team project: every change starts from an issue on a [project board](https://github.com/users/mahmoud-almalah/projects/5), goes through a pull request and CI, and ships in a sprint.
 
 ## Status
 
