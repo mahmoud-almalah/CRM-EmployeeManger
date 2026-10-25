@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CRM Employee Manager
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![CI](https://github.com/mahmoud-almalah/CRM-EmployeeManger/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoud-almalah/CRM-EmployeeManger/actions/workflows/ci.yml)
 
-## About Laravel
+A REST API for managing employees: accounts and roles, organization structure, attendance, payroll, meetings and the end of employment. Built with Laravel 11 as an experiment in **Clean Architecture and DDD**, and run like a team project: every change starts from an issue on a [project board](https://github.com/users/mahmoud-almalah/projects/5), goes through a pull request and CI, and ships in a sprint.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Status
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Sprint | Scope | State |
+| --- | --- | --- |
+| 1 | Foundation, authentication, roles, User module | **Delivered** (v0.1.0) |
+| 2 | Countries, cities, positions, work areas, shifts, supervisors | Planned |
+| 3 | Attendance, holidays, salary increments, payments, payroll, expenses | Planned |
+| 4 | Meetings, notifications, insurance, terminations, API docs | Planned |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The full backlog is on the board. Delivered work is described in the [changelog](CHANGELOG.md) and in [`docs/agile`](docs/agile).
 
-## Learning Laravel
+## Architecture in one picture
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```mermaid
+flowchart LR
+    Client --> P[Presentation<br/>controllers, requests, resources]
+    P -->|commands / queries| A[Application<br/>handlers, services, contracts]
+    A --> D[Domain<br/>entities, value objects]
+    I[Infrastructure<br/>repositories] -->|implements| A
+    I --> D
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Dependencies point inward, controllers talk to the application only through a command bus and a query bus, and the application defines the contracts the infrastructure implements. Details, the request flow and a recipe for adding a module are in [`docs/architecture.md`](docs/architecture.md). The reasoning behind the main choices is in [`docs/adr`](docs/adr).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+src/
+├── Domain/          entities, value objects, casts, scopes
+├── Application/     commands, queries, handlers, services, contracts
+├── Infrastructure/  repositories, service provider bindings
+├── Presentation/    controllers, form requests, resources, routes
+└── Shared/          enums, traits
+```
 
-## Laravel Sponsors
+## API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+All routes are under `/api` and return JSON. Protected routes need `Authorization: Bearer <token>`.
 
-### Premium Partners
+| Method | Path | Permission | Purpose |
+| --- | --- | --- | --- |
+| POST | `/auth/login` | none | Sign in with `login` (username or email) and `password` |
+| POST | `/auth/logout` | token | Revoke the current token |
+| GET | `/auth/me` | token | The signed-in user |
+| GET | `/users` | `users.view` | List with `filter[...]`, `sort`, `include=roles`, `page`, `per_page` |
+| GET | `/users/{id}` | `users.view` | One user, optional `include=roles` |
+| POST | `/users` | `users.create` | Create a user and assign a role |
+| PUT | `/users/{id}` | `users.update` | Update a user |
+| DELETE | `/users/{id}` | `users.delete` | Soft delete and revoke tokens |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Errors share one shape: `{"message": "...", "errors": {...}}`.
 
-## Contributing
+## Getting started
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Requirements: PHP 8.2+ (8.3 recommended), Composer, and a database (MySQL by default; tests use SQLite).
 
-## Code of Conduct
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+# create the database named in .env (DB_DATABASE), then:
+php artisan migrate --seed
+php artisan passport:keys
+php artisan passport:client --personal
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The seeder creates sample accounts (`admin`, `hr`, `manager` and a few employees), all with the password `password`. Change them anywhere that is not your own machine.
 
-## Security Vulnerabilities
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Accept: application/json" -d "login=admin" -d "password=password"
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Tests and quality checks
+
+```bash
+vendor/bin/pest            # unit and feature tests, in-memory SQLite
+vendor/bin/pint --test     # code style
+vendor/bin/phpstan analyse # static analysis (larastan, level 5)
+```
+
+CI runs the same three on every pull request.
+
+## Workflow
+
+- Branches: `master` (production), `staging` (release candidate), `develop` (default, integration), `feature/<issue>-<slug>` for each task. See [CONTRIBUTING](CONTRIBUTING.md).
+- Commits follow Conventional Commits; PRs are squash-merged into `develop` once CI is green.
+- Sprints end with a `develop → staging → master` release, a tag, and a review and retrospective in [`docs/agile`](docs/agile).
+
+## How this was built
+
+The architecture and the domain are the project owner's. The implementation was done with [Claude Code](https://claude.com/claude-code) as a pair programmer: it helped plan the backlog, wrote most of the code and tests from the owner's direction, and reviewed the existing code. Where Claude contributed a design idea or found a problem (for example moving the value objects into the domain layer, the repository contract, lazy bus handlers, the query allowlist), the relevant ADR or sprint review says so. The owner reviews and decides what is merged.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
