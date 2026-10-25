@@ -11,6 +11,6 @@ class UserRepository extends Repository
 {
     public function __construct()
     {
-        parent::__construct(User::make());
+        parent::__construct(new User);
     }
 }
