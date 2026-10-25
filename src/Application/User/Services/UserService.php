@@ -2,16 +2,16 @@
 
 namespace Application\User\Services;
 
+use Application\User\Contracts\UserRepositoryContract;
 use Application\User\Contracts\UserServiceContract;
 use Application\User\Data\UserData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Infrastructure\User\Persistence\Repositories\UserRepository;
 
 final class UserService implements UserServiceContract
 {
     public function __construct(
-        protected UserRepository $repository
+        protected UserRepositoryContract $repository
     ) {}
 
     public function query(): Builder
