@@ -63,3 +63,8 @@ it('removes a permission from a role when the matrix drops it', function () {
 
     expect(userWithRole(RoleName::Employee)->can('payments.view'))->toBeFalse();
 });
+
+it('keeps deleting accounts for admins only', function () {
+    expect(userWithRole(RoleName::Hr)->can('users.delete'))->toBeFalse()
+        ->and(userWithRole(RoleName::Admin)->can('users.delete'))->toBeTrue();
+});
