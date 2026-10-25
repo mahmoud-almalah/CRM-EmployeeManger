@@ -103,4 +103,4 @@ The architecture and the domain are the project owner's. The implementation was 
 
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
