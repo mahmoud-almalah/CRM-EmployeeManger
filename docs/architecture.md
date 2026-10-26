@@ -109,8 +109,18 @@ Every module follows the same slice. Use `User` as the reference.
 2. **Application**: `Data/` (DTO with `fromArray` and `toArray`), `Contracts/` (service and repository), `Services/`, `Commands/`, `CommandHandlers/`, `Queries/`, `QueriesHandlers/`.
 3. **Infrastructure**: `Persistence/Repositories/<Entity>Repository.php` extending `Repository`, bound to its contract in `InfrastructureServiceProvider`.
 4. **Presentation**: `Controllers/`, `Requests/`, `Resources/` (extend `Presentation\Resources\ApiResource`), `routes/api.php`. Route files are discovered, so nothing needs registering: `bootstrap/app.php` loads every `src/Presentation/*/routes/api.php`.
-5. Register each command and query handler in `ApplicationServiceProvider`.
-6. Add permissions to `RolesAndPermissionsSeeder`, a factory, and feature tests.
+5. Register each command and query handler in `ApplicationServiceProvider`, and the service contract in its `$bindings`.
+6. Permissions: `RolesAndPermissionsSeeder` already holds `<resource>.view|create|update|delete` for every planned resource; add to the matrix only when a module needs something new.
+7. Add a factory in `database/factories` (and a `newFactory()` on the entity, because entities live outside `App\Models`) and feature tests in `tests/Feature/<Module>`. Tests build reference rows with factories, never raw inserts.
+
+### Conventions the organization modules settled on
+
+- **Presentation modules group related entities.** `src/Presentation/Organization` holds the controllers, requests and resources of countries, cities, positions, work areas, shifts and supervisors under one `routes/api.php`. The Application, Domain and Infrastructure layers still have one folder per entity.
+- **One request class for create and update.** `CountryRequest` and friends serve POST and PUT; the uniqueness rule ignores `route('id')`, and a missing record is a 404 before validation runs.
+- **A delete that would orphan data is a 409.** The handler asks the service whether the row is in use and throws a subclass of `BusinessConflictException` (`CountryInUseException`, `ShiftOverlapException`, ...); `ApiExceptionRenderer` turns it into 409.
+- **Business rules that need no database live in the Domain.** `ShiftWindow` (minutes since midnight, overnight aware) decides whether two shifts overlap and is unit tested without booting the framework; the handler only loads the sibling shifts.
+- **Nested resources are scoped in the repository.** Shifts are always fetched through their work area (`findInWorkArea`), so a shift id under the wrong area is a 404.
+- **Includes are relation names.** `GET /api/users?include=workArea,workShift` uses Spatie's allowlist; an include that is not listed answers 400.
 
 ## Shared presentation base
 
