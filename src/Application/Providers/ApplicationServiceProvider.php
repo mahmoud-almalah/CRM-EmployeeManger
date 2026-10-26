@@ -48,6 +48,18 @@ use Application\Position\Queries\GetPositionsQuery;
 use Application\Position\QueriesHandlers\GetPositionQueryHandler;
 use Application\Position\QueriesHandlers\GetPositionsQueryHandler;
 use Application\Position\Services\PositionService;
+use Application\Supervisor\CommandHandlers\CreateSupervisorCommandHandler;
+use Application\Supervisor\CommandHandlers\DeleteSupervisorCommandHandler;
+use Application\Supervisor\CommandHandlers\UpdateSupervisorCommandHandler;
+use Application\Supervisor\Commands\CreateSupervisorCommand;
+use Application\Supervisor\Commands\DeleteSupervisorCommand;
+use Application\Supervisor\Commands\UpdateSupervisorCommand;
+use Application\Supervisor\Contracts\SupervisorServiceContract;
+use Application\Supervisor\Queries\GetSupervisorQuery;
+use Application\Supervisor\Queries\GetSupervisorsQuery;
+use Application\Supervisor\QueriesHandlers\GetSupervisorQueryHandler;
+use Application\Supervisor\QueriesHandlers\GetSupervisorsQueryHandler;
+use Application\Supervisor\Services\SupervisorService;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
 use Application\User\CommandHandlers\DeleteUserCommandHandler;
 use Application\User\CommandHandlers\UpdateUserCommandHandler;
@@ -100,6 +112,7 @@ class ApplicationServiceProvider extends ServiceProvider
         PositionServiceContract::class => PositionService::class,
         WorkAreaServiceContract::class => WorkAreaService::class,
         WorkShiftServiceContract::class => WorkShiftService::class,
+        SupervisorServiceContract::class => SupervisorService::class,
     ];
 
     public function boot(): void
@@ -131,6 +144,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateWorkShiftCommand::class => CreateWorkShiftCommandHandler::class,
             UpdateWorkShiftCommand::class => UpdateWorkShiftCommandHandler::class,
             DeleteWorkShiftCommand::class => DeleteWorkShiftCommandHandler::class,
+            CreateSupervisorCommand::class => CreateSupervisorCommandHandler::class,
+            UpdateSupervisorCommand::class => UpdateSupervisorCommandHandler::class,
+            DeleteSupervisorCommand::class => DeleteSupervisorCommandHandler::class,
         ]);
     }
 
@@ -149,6 +165,8 @@ class ApplicationServiceProvider extends ServiceProvider
             GetWorkAreaQuery::class => GetWorkAreaQueryHandler::class,
             GetWorkShiftsQuery::class => GetWorkShiftsQueryHandler::class,
             GetWorkShiftQuery::class => GetWorkShiftQueryHandler::class,
+            GetSupervisorsQuery::class => GetSupervisorsQueryHandler::class,
+            GetSupervisorQuery::class => GetSupervisorQueryHandler::class,
         ]);
     }
 }
