@@ -60,6 +60,18 @@ use Application\User\Queries\GetUsersQuery;
 use Application\User\QueriesHandlers\GetUserQueryHandler;
 use Application\User\QueriesHandlers\GetUsersQueryHandler;
 use Application\User\Services\UserService;
+use Application\WorkArea\CommandHandlers\CreateWorkAreaCommandHandler;
+use Application\WorkArea\CommandHandlers\DeleteWorkAreaCommandHandler;
+use Application\WorkArea\CommandHandlers\UpdateWorkAreaCommandHandler;
+use Application\WorkArea\Commands\CreateWorkAreaCommand;
+use Application\WorkArea\Commands\DeleteWorkAreaCommand;
+use Application\WorkArea\Commands\UpdateWorkAreaCommand;
+use Application\WorkArea\Contracts\WorkAreaServiceContract;
+use Application\WorkArea\Queries\GetWorkAreaQuery;
+use Application\WorkArea\Queries\GetWorkAreasQuery;
+use Application\WorkArea\QueriesHandlers\GetWorkAreaQueryHandler;
+use Application\WorkArea\QueriesHandlers\GetWorkAreasQueryHandler;
+use Application\WorkArea\Services\WorkAreaService;
 use Illuminate\Support\ServiceProvider;
 
 class ApplicationServiceProvider extends ServiceProvider
@@ -74,6 +86,7 @@ class ApplicationServiceProvider extends ServiceProvider
         CountryServiceContract::class => CountryService::class,
         CityServiceContract::class => CityService::class,
         PositionServiceContract::class => PositionService::class,
+        WorkAreaServiceContract::class => WorkAreaService::class,
     ];
 
     public function boot(): void
@@ -99,6 +112,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreatePositionCommand::class => CreatePositionCommandHandler::class,
             UpdatePositionCommand::class => UpdatePositionCommandHandler::class,
             DeletePositionCommand::class => DeletePositionCommandHandler::class,
+            CreateWorkAreaCommand::class => CreateWorkAreaCommandHandler::class,
+            UpdateWorkAreaCommand::class => UpdateWorkAreaCommandHandler::class,
+            DeleteWorkAreaCommand::class => DeleteWorkAreaCommandHandler::class,
         ]);
     }
 
@@ -113,6 +129,8 @@ class ApplicationServiceProvider extends ServiceProvider
             GetCityQuery::class => GetCityQueryHandler::class,
             GetPositionsQuery::class => GetPositionsQueryHandler::class,
             GetPositionQuery::class => GetPositionQueryHandler::class,
+            GetWorkAreasQuery::class => GetWorkAreasQueryHandler::class,
+            GetWorkAreaQuery::class => GetWorkAreaQueryHandler::class,
         ]);
     }
 }

@@ -19,6 +19,7 @@ class CountryRepository extends Repository implements CountryRepositoryContract
     public function isInUse(string $id): bool
     {
         return DB::table('cities')->where('country_id', $id)->exists()
+            || DB::table('work_areas')->where('country_id', $id)->exists()
             || DB::table('users')->where('country_id', $id)->exists();
     }
 }
