@@ -32,10 +32,10 @@ class CreateUserRequest extends FormRequest
             'phone.number' => ['required', 'digits_between:6,15'],
             'address' => ['nullable', 'string', 'max:255'],
             'country_id' => ['required', 'integer', Rule::exists('countries', 'id')],
-            'city_id' => ['required', 'integer', Rule::exists('cities', 'id')],
+            'city_id' => ['required', 'integer', Rule::exists('cities', 'id')->where('country_id', $this->input('country_id'))],
             'position_id' => ['required', 'integer', Rule::exists('positions', 'id')],
             'work_area_id' => ['required', 'integer', Rule::exists('work_areas', 'id')],
-            'work_shift_id' => ['required', 'integer', Rule::exists('work_shifts', 'id')],
+            'work_shift_id' => ['required', 'integer', Rule::exists('work_shifts', 'id')->where('work_area_id', $this->input('work_area_id'))],
             'birth_date' => ['required', 'date', 'before:today'],
             'start_working_date' => ['required', 'date'],
             'end_working_date' => ['nullable', 'date', 'after_or_equal:start_working_date'],
@@ -48,6 +48,17 @@ class CreateUserRequest extends FormRequest
             'role' => ['required', Rule::enum(RoleName::class)],
             'password' => ['required', 'string', 'min:8'],
             'additional_info' => ['nullable', 'array'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'city_id.exists' => 'The selected city does not belong to the selected country.',
+            'work_shift_id.exists' => 'The selected shift does not belong to the selected work area.',
         ];
     }
 
