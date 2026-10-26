@@ -17,6 +17,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - Work areas: `/api/work-areas` CRUD with an active manager, a `WorkAreaStatus` enum (open, closed, under_maintenance), `filter[city_id|country_id|status]`, `include=city,country,manager`; `WorkAreaFactory`
 - Work shifts: `/api/work-areas/{id}/shifts` CRUD with `HH:MM` times, overnight shifts, a 409 when a shift overlaps another one of the same work area or still has employees; `WorkShiftFactory`, `include=shifts` on work areas
 - Test helper `organization()` is built entirely from factories
+- Supervisors: `/api/supervisors` CRUD (uuid ids, hashed password, `SupervisorStatus` enum, unique email and phone, filters by name, email and status); `SupervisorFactory`
+- `supervisors.status` is now a string column (new migration), matching the users table
 ### Fixed (work areas)
 - `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched)
 
