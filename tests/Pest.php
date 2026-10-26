@@ -6,9 +6,9 @@ use Domain\Country\Entities\Country;
 use Domain\Position\Entities\Position;
 use Domain\User\Entities\User;
 use Domain\WorkArea\Entities\WorkArea;
+use Domain\WorkShift\Entities\WorkShift;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 use Shared\Enums\RoleName;
 use Tests\TestCase;
@@ -50,7 +50,6 @@ function setUpPassport(): void
 
 /**
  * The reference rows a user points at, built with the organization factories.
- * The shift is still inserted directly until the WorkShift factory exists.
  *
  * @return array{country_id: int, city_id: int, position_id: int, work_area_id: int, work_shift_id: int}
  */
@@ -60,14 +59,11 @@ function organization(): array
     $city = City::factory()->create(['country_id' => $country->id]);
     $position = Position::factory()->create();
     $workArea = WorkArea::factory()->create(['city_id' => $city->id, 'country_id' => $country->id]);
-    $shiftId = DB::table('work_shifts')->insertGetId([
-        'work_area_id' => $workArea->id, 'name' => 'morning', 'start_time' => '09:00', 'end_time' => '17:00',
-        'created_at' => now(), 'updated_at' => now(),
-    ]);
+    $shift = WorkShift::factory()->create(['work_area_id' => $workArea->id]);
 
     return [
         'country_id' => $country->id, 'city_id' => $city->id, 'position_id' => $position->id,
-        'work_area_id' => $workArea->id, 'work_shift_id' => $shiftId,
+        'work_area_id' => $workArea->id, 'work_shift_id' => $shift->id,
     ];
 }
 
