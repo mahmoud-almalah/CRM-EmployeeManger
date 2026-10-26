@@ -36,6 +36,18 @@ use Application\Country\Queries\GetCountryQuery;
 use Application\Country\QueriesHandlers\GetCountriesQueryHandler;
 use Application\Country\QueriesHandlers\GetCountryQueryHandler;
 use Application\Country\Services\CountryService;
+use Application\Position\CommandHandlers\CreatePositionCommandHandler;
+use Application\Position\CommandHandlers\DeletePositionCommandHandler;
+use Application\Position\CommandHandlers\UpdatePositionCommandHandler;
+use Application\Position\Commands\CreatePositionCommand;
+use Application\Position\Commands\DeletePositionCommand;
+use Application\Position\Commands\UpdatePositionCommand;
+use Application\Position\Contracts\PositionServiceContract;
+use Application\Position\Queries\GetPositionQuery;
+use Application\Position\Queries\GetPositionsQuery;
+use Application\Position\QueriesHandlers\GetPositionQueryHandler;
+use Application\Position\QueriesHandlers\GetPositionsQueryHandler;
+use Application\Position\Services\PositionService;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
 use Application\User\CommandHandlers\DeleteUserCommandHandler;
 use Application\User\CommandHandlers\UpdateUserCommandHandler;
@@ -61,6 +73,7 @@ class ApplicationServiceProvider extends ServiceProvider
         UserServiceContract::class => UserService::class,
         CountryServiceContract::class => CountryService::class,
         CityServiceContract::class => CityService::class,
+        PositionServiceContract::class => PositionService::class,
     ];
 
     public function boot(): void
@@ -83,6 +96,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateCityCommand::class => CreateCityCommandHandler::class,
             UpdateCityCommand::class => UpdateCityCommandHandler::class,
             DeleteCityCommand::class => DeleteCityCommandHandler::class,
+            CreatePositionCommand::class => CreatePositionCommandHandler::class,
+            UpdatePositionCommand::class => UpdatePositionCommandHandler::class,
+            DeletePositionCommand::class => DeletePositionCommandHandler::class,
         ]);
     }
 
@@ -95,6 +111,8 @@ class ApplicationServiceProvider extends ServiceProvider
             GetCountryQuery::class => GetCountryQueryHandler::class,
             GetCitiesQuery::class => GetCitiesQueryHandler::class,
             GetCityQuery::class => GetCityQueryHandler::class,
+            GetPositionsQuery::class => GetPositionsQueryHandler::class,
+            GetPositionQuery::class => GetPositionQueryHandler::class,
         ]);
     }
 }
