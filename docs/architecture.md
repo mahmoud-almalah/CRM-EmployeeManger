@@ -108,6 +108,11 @@ Every module follows the same slice. Use `User` as the reference.
 1. **Domain**: `src/Domain/<Module>/Entities/<Entity>.php`, plus `Traits/` for scopes and relations, `Casts/` or `ValueObjects/` if needed. Add `@property` docs for typed attributes.
 2. **Application**: `Data/` (DTO with `fromArray` and `toArray`), `Contracts/` (service and repository), `Services/`, `Commands/`, `CommandHandlers/`, `Queries/`, `QueriesHandlers/`.
 3. **Infrastructure**: `Persistence/Repositories/<Entity>Repository.php` extending `Repository`, bound to its contract in `InfrastructureServiceProvider`.
-4. **Presentation**: `Controllers/`, `Requests/`, `Resources/`, `routes/api.php`; register the route file in `bootstrap/app.php`.
+4. **Presentation**: `Controllers/`, `Requests/`, `Resources/` (extend `Presentation\Resources\ApiResource`), `routes/api.php`. Route files are discovered, so nothing needs registering: `bootstrap/app.php` loads every `src/Presentation/*/routes/api.php`.
 5. Register each command and query handler in `ApplicationServiceProvider`.
 6. Add permissions to `RolesAndPermissionsSeeder`, a factory, and feature tests.
+
+## Shared presentation base
+
+- **Route discovery**: `bootstrap/app.php` globs `src/Presentation/*/routes/api.php`, so a new module only has to add its folder. Every route is served under `/api`.
+- **`ApiResource`**: the base class for all resources. It fixes the envelope (`{"data": ...}` for one item, `data`, `links` and `meta` for a paginated list) and provides `iso()` and `timestamps()` so dates look the same in every module.
