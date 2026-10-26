@@ -12,6 +12,8 @@ A REST API for managing employees (formerly CRM-EmployeeManger): accounts and ro
 | 2 | Countries, cities, positions, work areas, shifts, supervisors | **Delivered** (v0.2.0) |
 | 3 | Attendance, holidays, salary increments, payments, payroll, expenses | Planned |
 | 4 | Meetings, notifications, insurance, terminations, API docs | Planned |
+| 5 | Production readiness: deployment, account security, audit and data protection, engineering quality | Planned |
+| Later | Product backlog: client apps, multi-tenancy, leave and payroll depth, integrations, go-to-market | Candidates |
 
 The full backlog is on the board. Delivered work is described in the [changelog](CHANGELOG.md) and in [`docs/agile`](docs/agile).
 
