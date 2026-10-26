@@ -12,6 +12,18 @@ use Application\Bus\Command\IlluminateCommandBus;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\Query\IlluminateQueryBus;
+use Application\City\CommandHandlers\CreateCityCommandHandler;
+use Application\City\CommandHandlers\DeleteCityCommandHandler;
+use Application\City\CommandHandlers\UpdateCityCommandHandler;
+use Application\City\Commands\CreateCityCommand;
+use Application\City\Commands\DeleteCityCommand;
+use Application\City\Commands\UpdateCityCommand;
+use Application\City\Contracts\CityServiceContract;
+use Application\City\Queries\GetCitiesQuery;
+use Application\City\Queries\GetCityQuery;
+use Application\City\QueriesHandlers\GetCitiesQueryHandler;
+use Application\City\QueriesHandlers\GetCityQueryHandler;
+use Application\City\Services\CityService;
 use Application\Country\CommandHandlers\CreateCountryCommandHandler;
 use Application\Country\CommandHandlers\DeleteCountryCommandHandler;
 use Application\Country\CommandHandlers\UpdateCountryCommandHandler;
@@ -48,6 +60,7 @@ class ApplicationServiceProvider extends ServiceProvider
     public $bindings = [
         UserServiceContract::class => UserService::class,
         CountryServiceContract::class => CountryService::class,
+        CityServiceContract::class => CityService::class,
     ];
 
     public function boot(): void
@@ -67,6 +80,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateCountryCommand::class => CreateCountryCommandHandler::class,
             UpdateCountryCommand::class => UpdateCountryCommandHandler::class,
             DeleteCountryCommand::class => DeleteCountryCommandHandler::class,
+            CreateCityCommand::class => CreateCityCommandHandler::class,
+            UpdateCityCommand::class => UpdateCityCommandHandler::class,
+            DeleteCityCommand::class => DeleteCityCommandHandler::class,
         ]);
     }
 
@@ -77,6 +93,8 @@ class ApplicationServiceProvider extends ServiceProvider
             GetUserQuery::class => GetUserQueryHandler::class,
             GetCountriesQuery::class => GetCountriesQueryHandler::class,
             GetCountryQuery::class => GetCountryQueryHandler::class,
+            GetCitiesQuery::class => GetCitiesQueryHandler::class,
+            GetCityQuery::class => GetCityQueryHandler::class,
         ]);
     }
 }
