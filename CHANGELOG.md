@@ -12,6 +12,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - MIT LICENSE file
 - `ApiResource` base class for API resources and automatic discovery of `src/Presentation/*/routes/api.php`
 - Countries: `GET/POST /api/countries`, `GET/PUT/DELETE /api/countries/{id}` with filters, sorting and a 409 when the country is still in use; `CountryFactory`
+- Cities: `/api/cities` CRUD with `filter[country_id]`, `include=country`, validated coordinates (lat/lng) and timezone; `CityFactory`
 
 ### Changed
 - CI workflow runs with read-only permissions.
