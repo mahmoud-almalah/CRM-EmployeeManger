@@ -1,7 +1,11 @@
 <?php
 
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Domain\City\Entities\City;
+use Domain\Country\Entities\Country;
+use Domain\Position\Entities\Position;
 use Domain\User\Entities\User;
+use Domain\WorkArea\Entities\WorkArea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -45,31 +49,25 @@ function setUpPassport(): void
 }
 
 /**
- * The reference rows a user points at. Sprint 2 adds proper factories for these;
- * until then they are inserted directly.
+ * The reference rows a user points at, built with the organization factories.
+ * The shift is still inserted directly until the WorkShift factory exists.
  *
  * @return array{country_id: int, city_id: int, position_id: int, work_area_id: int, work_shift_id: int}
  */
 function organization(): array
 {
-    $now = now();
-
-    $countryId = DB::table('countries')->insertGetId(['name' => 'Egypt', 'phone_code' => '+20', 'currency' => 'EGP', 'created_at' => $now, 'updated_at' => $now]);
-    $cityId = DB::table('cities')->insertGetId(['country_id' => $countryId, 'name' => 'Cairo', 'created_at' => $now, 'updated_at' => $now]);
-    $positionId = DB::table('positions')->insertGetId(['name' => 'Developer', 'created_at' => $now, 'updated_at' => $now]);
-    $managerId = User::factory()->create()->id;
-    $workAreaId = DB::table('work_areas')->insertGetId([
-        'name' => 'Head office', 'address' => '1 Main St', 'city' => $cityId, 'country' => $countryId,
-        'manager_id' => $managerId, 'created_at' => $now, 'updated_at' => $now,
-    ]);
+    $country = Country::factory()->create();
+    $city = City::factory()->create(['country_id' => $country->id]);
+    $position = Position::factory()->create();
+    $workArea = WorkArea::factory()->create(['city_id' => $city->id, 'country_id' => $country->id]);
     $shiftId = DB::table('work_shifts')->insertGetId([
-        'work_area_id' => $workAreaId, 'name' => 'morning', 'start_time' => '09:00', 'end_time' => '17:00',
-        'created_at' => $now, 'updated_at' => $now,
+        'work_area_id' => $workArea->id, 'name' => 'morning', 'start_time' => '09:00', 'end_time' => '17:00',
+        'created_at' => now(), 'updated_at' => now(),
     ]);
 
     return [
-        'country_id' => $countryId, 'city_id' => $cityId, 'position_id' => $positionId,
-        'work_area_id' => $workAreaId, 'work_shift_id' => $shiftId,
+        'country_id' => $country->id, 'city_id' => $city->id, 'position_id' => $position->id,
+        'work_area_id' => $workArea->id, 'work_shift_id' => $shiftId,
     ];
 }
 

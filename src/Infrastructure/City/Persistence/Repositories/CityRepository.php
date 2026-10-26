@@ -18,6 +18,7 @@ class CityRepository extends Repository implements CityRepositoryContract
 
     public function isInUse(string $id): bool
     {
-        return DB::table('users')->where('city_id', $id)->exists();
+        return DB::table('work_areas')->where('city_id', $id)->exists()
+            || DB::table('users')->where('city_id', $id)->exists();
     }
 }

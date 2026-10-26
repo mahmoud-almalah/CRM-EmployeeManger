@@ -14,6 +14,9 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - Countries: `GET/POST /api/countries`, `GET/PUT/DELETE /api/countries/{id}` with filters, sorting and a 409 when the country is still in use; `CountryFactory`
 - Cities: `/api/cities` CRUD with `filter[country_id]`, `include=country`, validated coordinates (lat/lng) and timezone; `CityFactory`
 - Positions: `/api/positions` CRUD with a unique name, `filter[name]` and a 409 when users still hold the position; `PositionFactory`
+- Work areas: `/api/work-areas` CRUD with an active manager, a `WorkAreaStatus` enum (open, closed, under_maintenance), `filter[city_id|country_id|status]`, `include=city,country,manager`; `WorkAreaFactory`
+### Fixed (work areas)
+- `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched)
 
 ### Changed
 - CI workflow runs with read-only permissions.
