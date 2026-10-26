@@ -34,6 +34,7 @@ final class WorkAreaResource extends ApiResource
             'city' => CityResource::make($this->whenLoaded('city')),
             'country' => CountryResource::make($this->whenLoaded('country')),
             'manager' => UserResource::make($this->whenLoaded('manager')),
+            'shifts' => WorkShiftResource::collection($this->whenLoaded('shifts')),
         ] + $this->timestamps();
     }
 }

@@ -7,6 +7,7 @@ use Presentation\Organization\Controllers\CityController;
 use Presentation\Organization\Controllers\CountryController;
 use Presentation\Organization\Controllers\PositionController;
 use Presentation\Organization\Controllers\WorkAreaController;
+use Presentation\Organization\Controllers\WorkShiftController;
 
 Route::middleware('auth:api')->group(function (): void {
     Route::controller(CountryController::class)->prefix('countries')->group(function (): void {
@@ -39,5 +40,13 @@ Route::middleware('auth:api')->group(function (): void {
         Route::post('/', 'store')->middleware('permission:work-areas.create,api');
         Route::put('{id}', 'update')->whereNumber('id')->middleware('permission:work-areas.update,api');
         Route::delete('{id}', 'destroy')->whereNumber('id')->middleware('permission:work-areas.delete,api');
+    });
+
+    Route::controller(WorkShiftController::class)->prefix('work-areas/{workAreaId}/shifts')->whereNumber('workAreaId')->group(function (): void {
+        Route::get('/', 'index')->middleware('permission:work-shifts.view,api');
+        Route::get('{id}', 'show')->whereNumber('id')->middleware('permission:work-shifts.view,api');
+        Route::post('/', 'store')->middleware('permission:work-shifts.create,api');
+        Route::put('{id}', 'update')->whereNumber('id')->middleware('permission:work-shifts.update,api');
+        Route::delete('{id}', 'destroy')->whereNumber('id')->middleware('permission:work-shifts.delete,api');
     });
 });
