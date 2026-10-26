@@ -9,12 +9,14 @@ use Application\Country\Contracts\CountryRepositoryContract;
 use Application\Position\Contracts\PositionRepositoryContract;
 use Application\User\Contracts\UserRepositoryContract;
 use Application\WorkArea\Contracts\WorkAreaRepositoryContract;
+use Application\WorkShift\Contracts\WorkShiftRepositoryContract;
 use Illuminate\Support\ServiceProvider;
 use Infrastructure\City\Persistence\Repositories\CityRepository;
 use Infrastructure\Country\Persistence\Repositories\CountryRepository;
 use Infrastructure\Position\Persistence\Repositories\PositionRepository;
 use Infrastructure\User\Persistence\Repositories\UserRepository;
 use Infrastructure\WorkArea\Persistence\Repositories\WorkAreaRepository;
+use Infrastructure\WorkShift\Persistence\Repositories\WorkShiftRepository;
 
 class InfrastructureServiceProvider extends ServiceProvider
 {
@@ -29,5 +31,6 @@ class InfrastructureServiceProvider extends ServiceProvider
         CityRepositoryContract::class => CityRepository::class,
         PositionRepositoryContract::class => PositionRepository::class,
         WorkAreaRepositoryContract::class => WorkAreaRepository::class,
+        WorkShiftRepositoryContract::class => WorkShiftRepository::class,
     ];
 }

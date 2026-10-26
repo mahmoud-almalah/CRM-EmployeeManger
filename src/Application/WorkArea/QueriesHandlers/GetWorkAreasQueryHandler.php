@@ -16,7 +16,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final class GetWorkAreasQueryHandler extends QueryHandler
 {
-    public const INCLUDES = ['city', 'country', 'manager'];
+    public const INCLUDES = ['city', 'country', 'manager', 'shifts'];
 
     public function handle(Query $query): LengthAwarePaginator
     {

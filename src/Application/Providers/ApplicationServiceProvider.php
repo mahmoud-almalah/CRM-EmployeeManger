@@ -72,6 +72,18 @@ use Application\WorkArea\Queries\GetWorkAreasQuery;
 use Application\WorkArea\QueriesHandlers\GetWorkAreaQueryHandler;
 use Application\WorkArea\QueriesHandlers\GetWorkAreasQueryHandler;
 use Application\WorkArea\Services\WorkAreaService;
+use Application\WorkShift\CommandHandlers\CreateWorkShiftCommandHandler;
+use Application\WorkShift\CommandHandlers\DeleteWorkShiftCommandHandler;
+use Application\WorkShift\CommandHandlers\UpdateWorkShiftCommandHandler;
+use Application\WorkShift\Commands\CreateWorkShiftCommand;
+use Application\WorkShift\Commands\DeleteWorkShiftCommand;
+use Application\WorkShift\Commands\UpdateWorkShiftCommand;
+use Application\WorkShift\Contracts\WorkShiftServiceContract;
+use Application\WorkShift\Queries\GetWorkShiftQuery;
+use Application\WorkShift\Queries\GetWorkShiftsQuery;
+use Application\WorkShift\QueriesHandlers\GetWorkShiftQueryHandler;
+use Application\WorkShift\QueriesHandlers\GetWorkShiftsQueryHandler;
+use Application\WorkShift\Services\WorkShiftService;
 use Illuminate\Support\ServiceProvider;
 
 class ApplicationServiceProvider extends ServiceProvider
@@ -87,6 +99,7 @@ class ApplicationServiceProvider extends ServiceProvider
         CityServiceContract::class => CityService::class,
         PositionServiceContract::class => PositionService::class,
         WorkAreaServiceContract::class => WorkAreaService::class,
+        WorkShiftServiceContract::class => WorkShiftService::class,
     ];
 
     public function boot(): void
@@ -115,6 +128,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateWorkAreaCommand::class => CreateWorkAreaCommandHandler::class,
             UpdateWorkAreaCommand::class => UpdateWorkAreaCommandHandler::class,
             DeleteWorkAreaCommand::class => DeleteWorkAreaCommandHandler::class,
+            CreateWorkShiftCommand::class => CreateWorkShiftCommandHandler::class,
+            UpdateWorkShiftCommand::class => UpdateWorkShiftCommandHandler::class,
+            DeleteWorkShiftCommand::class => DeleteWorkShiftCommandHandler::class,
         ]);
     }
 
@@ -131,6 +147,8 @@ class ApplicationServiceProvider extends ServiceProvider
             GetPositionQuery::class => GetPositionQueryHandler::class,
             GetWorkAreasQuery::class => GetWorkAreasQueryHandler::class,
             GetWorkAreaQuery::class => GetWorkAreaQueryHandler::class,
+            GetWorkShiftsQuery::class => GetWorkShiftsQueryHandler::class,
+            GetWorkShiftQuery::class => GetWorkShiftQueryHandler::class,
         ]);
     }
 }
