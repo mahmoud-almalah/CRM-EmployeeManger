@@ -12,6 +12,18 @@ use Application\Bus\Command\IlluminateCommandBus;
 use Application\Bus\Contracts\CommandBusContract;
 use Application\Bus\Contracts\QueryBusContract;
 use Application\Bus\Query\IlluminateQueryBus;
+use Application\Country\CommandHandlers\CreateCountryCommandHandler;
+use Application\Country\CommandHandlers\DeleteCountryCommandHandler;
+use Application\Country\CommandHandlers\UpdateCountryCommandHandler;
+use Application\Country\Commands\CreateCountryCommand;
+use Application\Country\Commands\DeleteCountryCommand;
+use Application\Country\Commands\UpdateCountryCommand;
+use Application\Country\Contracts\CountryServiceContract;
+use Application\Country\Queries\GetCountriesQuery;
+use Application\Country\Queries\GetCountryQuery;
+use Application\Country\QueriesHandlers\GetCountriesQueryHandler;
+use Application\Country\QueriesHandlers\GetCountryQueryHandler;
+use Application\Country\Services\CountryService;
 use Application\User\CommandHandlers\CreateUserCommandHandler;
 use Application\User\CommandHandlers\DeleteUserCommandHandler;
 use Application\User\CommandHandlers\UpdateUserCommandHandler;
@@ -35,6 +47,7 @@ class ApplicationServiceProvider extends ServiceProvider
 
     public $bindings = [
         UserServiceContract::class => UserService::class,
+        CountryServiceContract::class => CountryService::class,
     ];
 
     public function boot(): void
@@ -51,6 +64,9 @@ class ApplicationServiceProvider extends ServiceProvider
             CreateUserCommand::class => CreateUserCommandHandler::class,
             UpdateUserCommand::class => UpdateUserCommandHandler::class,
             DeleteUserCommand::class => DeleteUserCommandHandler::class,
+            CreateCountryCommand::class => CreateCountryCommandHandler::class,
+            UpdateCountryCommand::class => UpdateCountryCommandHandler::class,
+            DeleteCountryCommand::class => DeleteCountryCommandHandler::class,
         ]);
     }
 
@@ -59,6 +75,8 @@ class ApplicationServiceProvider extends ServiceProvider
         $this->app->make(QueryBusContract::class)->register([
             GetUsersQuery::class => GetUsersQueryHandler::class,
             GetUserQuery::class => GetUserQueryHandler::class,
+            GetCountriesQuery::class => GetCountriesQueryHandler::class,
+            GetCountryQuery::class => GetCountryQueryHandler::class,
         ]);
     }
 }
