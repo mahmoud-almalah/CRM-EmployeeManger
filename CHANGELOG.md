@@ -4,6 +4,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-26
+
+Organization structure (Sprint 2): countries, cities, positions, work areas, shifts and supervisors, and the user's links to them.
+
 ### Security
 - Upgraded to Laravel 12 and Passport 13. `composer audit` reported 59 advisories in 16 packages; every Laravel 11.x release up to 11.57 was affected by at least one, so the fix is the new major version. `composer audit` is now clean.
 - Added `SECURITY.md`, Dependabot updates for composer and GitHub Actions, and a dependency audit job in CI that also runs weekly.
@@ -21,11 +25,14 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - `supervisors.status` is now a string column (new migration), matching the users table
 - Users: `country`, `city`, `position`, `workArea` and `workShift` relations; `include=country,city,position,workArea,workShift` on `GET /api/users` and `GET /api/users/{id}`; the user resource returns the five foreign keys
 - Creating or updating a user checks that the city belongs to the country and the shift belongs to the work area
-### Fixed (work areas)
-- `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched)
 
 ### Changed
 - CI workflow runs with read-only permissions.
+- `BusinessConflictException` is rendered as 409 with the usual error body.
+- `UserResource` extends `ApiResource` and also returns the five organization foreign keys.
+
+### Fixed
+- `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched). Verified with `migrate:fresh`, rollback and migrate on SQLite; not run on MySQL.
 
 ## [0.1.0] - 2026-10-25
 
