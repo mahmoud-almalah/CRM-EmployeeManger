@@ -15,6 +15,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - Cities: `/api/cities` CRUD with `filter[country_id]`, `include=country`, validated coordinates (lat/lng) and timezone; `CityFactory`
 - Positions: `/api/positions` CRUD with a unique name, `filter[name]` and a 409 when users still hold the position; `PositionFactory`
 - Work areas: `/api/work-areas` CRUD with an active manager, a `WorkAreaStatus` enum (open, closed, under_maintenance), `filter[city_id|country_id|status]`, `include=city,country,manager`; `WorkAreaFactory`
+- Work shifts: `/api/work-areas/{id}/shifts` CRUD with `HH:MM` times, overnight shifts, a 409 when a shift overlaps another one of the same work area or still has employees; `WorkShiftFactory`, `include=shifts` on work areas
+- Test helper `organization()` is built entirely from factories
 ### Fixed (work areas)
 - `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched)
 
