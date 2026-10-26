@@ -7,6 +7,7 @@ namespace Domain\WorkArea\Traits;
 use Domain\City\Entities\City;
 use Domain\Country\Entities\Country;
 use Domain\User\Entities\User;
+use Domain\WorkShift\Entities\WorkShift;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -34,6 +35,14 @@ trait WorkAreaRelations
     public function manager(): BelongsTo
     {
         return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    /**
+     * @return HasMany<WorkShift, $this>
+     */
+    public function shifts(): HasMany
+    {
+        return $this->hasMany(WorkShift::class);
     }
 
     /**
