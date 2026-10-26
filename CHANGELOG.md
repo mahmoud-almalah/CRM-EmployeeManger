@@ -19,6 +19,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - Test helper `organization()` is built entirely from factories
 - Supervisors: `/api/supervisors` CRUD (uuid ids, hashed password, `SupervisorStatus` enum, unique email and phone, filters by name, email and status); `SupervisorFactory`
 - `supervisors.status` is now a string column (new migration), matching the users table
+- Users: `country`, `city`, `position`, `workArea` and `workShift` relations; `include=country,city,position,workArea,workShift` on `GET /api/users` and `GET /api/users/{id}`; the user resource returns the five foreign keys
+- Creating or updating a user checks that the city belongs to the country and the shift belongs to the work area
 ### Fixed (work areas)
 - `work_areas.city` and `work_areas.country` are now `city_id` and `country_id` (new migration, the original is untouched)
 
