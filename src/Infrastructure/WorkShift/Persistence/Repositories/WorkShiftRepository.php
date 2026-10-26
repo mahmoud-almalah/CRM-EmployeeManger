@@ -19,12 +19,12 @@ class WorkShiftRepository extends Repository implements WorkShiftRepositoryContr
 
     public function findInWorkArea(string $workAreaId, string $id): WorkShift
     {
-        return $this->query()->where('work_area_id', $workAreaId)->findOrFail($id);
+        return WorkShift::query()->where('work_area_id', $workAreaId)->findOrFail($id);
     }
 
     public function siblings(string $workAreaId, ?string $exceptId = null): Collection
     {
-        return $this->query()
+        return WorkShift::query()
             ->where('work_area_id', $workAreaId)
             ->when($exceptId !== null, fn ($query) => $query->whereKeyNot($exceptId))
             ->get();
