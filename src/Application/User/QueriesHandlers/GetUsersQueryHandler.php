@@ -33,7 +33,7 @@ final class GetUsersQueryHandler extends QueryHandler
                 AllowedFilter::callback('search', $this->search(...)),
             ])
             ->allowedSorts(['name', 'username', 'salary', 'start_working_date', 'created_at'])
-            ->allowedIncludes(['roles'])
+            ->allowedIncludes(UserIncludes::ALLOWED)
             ->defaultSort('-created_at')
             ->paginate($query->perPage, page: $query->page);
     }

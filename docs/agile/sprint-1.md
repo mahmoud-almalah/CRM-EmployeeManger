@@ -1,7 +1,7 @@
 # Sprint 1 - Foundation
 
 - Planned window: 2026-10-25 to 2026-11-01 (one-week iteration on the board)
-- Release: [v0.1.0](https://github.com/mahmoud-almalah/CRM-EmployeeManger/releases/tag/v0.1.0)
+- Release: [v0.1.0](https://github.com/mahmoud-almalah/employee-manager-api/releases/tag/v0.1.0)
 - Board: [project](https://github.com/users/mahmoud-almalah/projects/5), milestone "Sprint 1 - Foundation"
 
 ## Goal

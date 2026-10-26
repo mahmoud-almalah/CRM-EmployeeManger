@@ -2,6 +2,7 @@
 
 use Domain\User\Entities\User;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Passport;
 use Shared\Enums\RoleName;
 
 beforeEach(function () {
@@ -56,7 +57,7 @@ it('loads the roles of a user with a fixed number of queries', function () {
 
 it('requires the users.view permission', function () {
     $user = User::factory()->create();
-    Laravel\Passport\Passport::actingAs(User::factory()->create(), [], 'api');
+    Passport::actingAs(User::factory()->create(), [], 'api');
 
     $this->getJson("/api/users/{$user->id}")->assertForbidden();
 });

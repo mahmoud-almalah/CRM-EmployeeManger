@@ -1,7 +1,9 @@
 <?php
 
 use Domain\User\Entities\User;
+use Domain\User\ValueObjects\EmailObject;
 use Domain\User\ValueObjects\NameObject;
+use Laravel\Passport\Passport;
 use Shared\Enums\RoleName;
 
 beforeEach(function () {
@@ -54,7 +56,7 @@ it('filters by position and work area', function () {
 it('searches username, email and name', function () {
     User::factory()->create(['username' => 'findme']);
     User::factory()->create(['username' => 'a', 'name' => new NameObject('Zainab', null, 'Farouk')]);
-    User::factory()->create(['username' => 'b', 'email' => new Domain\User\ValueObjects\EmailObject('unique-address@example.com')]);
+    User::factory()->create(['username' => 'b', 'email' => new EmailObject('unique-address@example.com')]);
 
     expect(usernames($this->getJson('/api/users?filter[search]=findme')))->toBe(['findme'])
         ->and(usernames($this->getJson('/api/users?filter[search]=zainab')))->toBe(['a'])
@@ -112,6 +114,6 @@ it('requires the users.view permission', function () {
     actingAsRole(RoleName::Employee);
     $this->getJson('/api/users')->assertOk();
 
-    Laravel\Passport\Passport::actingAs(User::factory()->create(), [], 'api');
+    Passport::actingAs(User::factory()->create(), [], 'api');
     $this->getJson('/api/users')->assertForbidden();
 });

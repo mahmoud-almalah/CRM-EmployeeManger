@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use Shared\Enums\CurrencyEnum;
 use Shared\Enums\UserStatus;
@@ -39,7 +40,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon $start_working_date
  * @property Carbon|null $end_working_date
  */
-final class User extends Authenticatable
+final class User extends Authenticatable implements OAuthenticatable
 {
     use HasApiTokens, HasFactory, HasRoles, HasUuids,
         SoftDeletes, UserMutators,

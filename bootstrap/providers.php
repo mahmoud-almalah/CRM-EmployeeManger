@@ -1,11 +1,17 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Application\Providers\ApplicationServiceProvider;
+use Illuminate\Translation\TranslationServiceProvider;
+use Infrastructure\Providers\InfrastructureServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    Spatie\Permission\PermissionServiceProvider::class,
-    Illuminate\Translation\TranslationServiceProvider::class,
+    AppServiceProvider::class,
+    PermissionServiceProvider::class,
+    TranslationServiceProvider::class,
     Spatie\TranslationLoader\TranslationServiceProvider::class,
 
-    Application\Providers\ApplicationServiceProvider::class,
-    Infrastructure\Providers\InfrastructureServiceProvider::class,
+    ApplicationServiceProvider::class,
+    InfrastructureServiceProvider::class,
 ];

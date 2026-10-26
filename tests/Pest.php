@@ -1,8 +1,17 @@
 <?php
 
+use Database\Seeders\RolesAndPermissionsSeeder;
+use Domain\City\Entities\City;
+use Domain\Country\Entities\Country;
+use Domain\Position\Entities\Position;
+use Domain\User\Entities\User;
+use Domain\WorkArea\Entities\WorkArea;
+use Domain\WorkShift\Entities\WorkShift;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
+use Laravel\Passport\Passport;
+use Shared\Enums\RoleName;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-pest()->extend(Tests\TestCase::class)
+pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
 
@@ -40,31 +49,21 @@ function setUpPassport(): void
 }
 
 /**
- * The reference rows a user points at. Sprint 2 adds proper factories for these;
- * until then they are inserted directly.
+ * The reference rows a user points at, built with the organization factories.
  *
  * @return array{country_id: int, city_id: int, position_id: int, work_area_id: int, work_shift_id: int}
  */
 function organization(): array
 {
-    $now = now();
-
-    $countryId = DB::table('countries')->insertGetId(['name' => 'Egypt', 'phone_code' => '+20', 'currency' => 'EGP', 'created_at' => $now, 'updated_at' => $now]);
-    $cityId = DB::table('cities')->insertGetId(['country_id' => $countryId, 'name' => 'Cairo', 'created_at' => $now, 'updated_at' => $now]);
-    $positionId = DB::table('positions')->insertGetId(['name' => 'Developer', 'created_at' => $now, 'updated_at' => $now]);
-    $managerId = Domain\User\Entities\User::factory()->create()->id;
-    $workAreaId = DB::table('work_areas')->insertGetId([
-        'name' => 'Head office', 'address' => '1 Main St', 'city' => $cityId, 'country' => $countryId,
-        'manager_id' => $managerId, 'created_at' => $now, 'updated_at' => $now,
-    ]);
-    $shiftId = DB::table('work_shifts')->insertGetId([
-        'work_area_id' => $workAreaId, 'name' => 'morning', 'start_time' => '09:00', 'end_time' => '17:00',
-        'created_at' => $now, 'updated_at' => $now,
-    ]);
+    $country = Country::factory()->create();
+    $city = City::factory()->create(['country_id' => $country->id]);
+    $position = Position::factory()->create();
+    $workArea = WorkArea::factory()->create(['city_id' => $city->id, 'country_id' => $country->id]);
+    $shift = WorkShift::factory()->create(['work_area_id' => $workArea->id]);
 
     return [
-        'country_id' => $countryId, 'city_id' => $cityId, 'position_id' => $positionId,
-        'work_area_id' => $workAreaId, 'work_shift_id' => $shiftId,
+        'country_id' => $country->id, 'city_id' => $city->id, 'position_id' => $position->id,
+        'work_area_id' => $workArea->id, 'work_shift_id' => $shift->id,
     ];
 }
 
@@ -92,12 +91,12 @@ function userPayload(array $overrides = []): array
 /**
  * Signs in as a user holding the given role.
  */
-function actingAsRole(Shared\Enums\RoleName $role): Domain\User\Entities\User
+function actingAsRole(RoleName $role): User
 {
-    test()->seed(Database\Seeders\RolesAndPermissionsSeeder::class);
+    test()->seed(RolesAndPermissionsSeeder::class);
 
-    $user = Domain\User\Entities\User::factory()->create()->assignRole($role->value);
-    Laravel\Passport\Passport::actingAs($user, [], 'api');
+    $user = User::factory()->create()->assignRole($role->value);
+    Passport::actingAs($user, [], 'api');
 
     return $user;
 }

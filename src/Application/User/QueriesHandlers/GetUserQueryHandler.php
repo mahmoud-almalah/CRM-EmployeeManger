@@ -22,7 +22,7 @@ final class GetUserQueryHandler extends QueryHandler
 
         /** @var User */
         return QueryBuilder::for(User::class, new Request($query->getParameters()))
-            ->allowedIncludes(['roles'])
+            ->allowedIncludes(UserIncludes::ALLOWED)
             ->whereKey($query->userId)
             ->firstOrFail();
     }

@@ -1,1 +1,5 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Question or idea
+    url: https://github.com/mahmoud-almalah/employee-manager-api/discussions
+    about: Ask a question, suggest an idea or show what you built in Discussions.
