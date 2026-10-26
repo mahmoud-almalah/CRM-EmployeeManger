@@ -10,10 +10,8 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [__DIR__.'/../src/Presentation/UserManagement/routes/web.php'],
-        api: [
-            __DIR__.'/../src/Presentation/Auth/routes/api.php',
-            __DIR__.'/../src/Presentation/UserManagement/routes/api.php',
-        ],
+        // Every module keeps its routes in src/Presentation/<Module>/routes/api.php.
+        api: glob(__DIR__.'/../src/Presentation/*/routes/api.php') ?: [],
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
