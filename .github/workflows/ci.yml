@@ -54,6 +54,54 @@ jobs:
       - name: Pest
         run: vendor/bin/pest
 
+  mysql:
+    name: Tests on MySQL
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: employee_manager_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -psecret"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: employee_manager_test
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_mysql, bcmath
+          coverage: none
+
+      - name: Cache composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: cp .env.example .env && php artisan key:generate
+
+      - name: Pest on MySQL
+        run: vendor/bin/pest
+
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
