@@ -7,6 +7,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 ### Added
 - Architecture tests that enforce the dependency rule and the bus conventions (#131).
 - The test suite also runs on MySQL 8.4 in CI (#114).
+- `GET /api/health` reports the database, cache and queue, an `X-Request-Id` header on every response, and the id on every log line (#117). See `docs/operations.md`.
 
 ### Fixed
 - Signing in returned 500 on MySQL: Passport stored `user_id` as a bigint while users have UUID keys. SQLite hid it. A migration converts the columns (#114).

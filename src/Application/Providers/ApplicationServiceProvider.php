@@ -36,6 +36,8 @@ use Application\Country\Queries\GetCountryQuery;
 use Application\Country\QueriesHandlers\GetCountriesQueryHandler;
 use Application\Country\QueriesHandlers\GetCountryQueryHandler;
 use Application\Country\Services\CountryService;
+use Application\Health\Queries\GetHealthQuery;
+use Application\Health\QueriesHandlers\GetHealthQueryHandler;
 use Application\Position\CommandHandlers\CreatePositionCommandHandler;
 use Application\Position\CommandHandlers\DeletePositionCommandHandler;
 use Application\Position\CommandHandlers\UpdatePositionCommandHandler;
@@ -153,6 +155,7 @@ class ApplicationServiceProvider extends ServiceProvider
     protected function registerQueryHandlers(): void
     {
         $this->app->make(QueryBusContract::class)->register([
+            GetHealthQuery::class => GetHealthQueryHandler::class,
             GetUsersQuery::class => GetUsersQueryHandler::class,
             GetUserQuery::class => GetUserQueryHandler::class,
             GetCountriesQuery::class => GetCountriesQueryHandler::class,
