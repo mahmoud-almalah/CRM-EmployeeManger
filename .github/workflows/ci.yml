@@ -102,6 +102,39 @@ jobs:
       - name: Pest on MySQL
         run: vendor/bin/pest
 
+  docker:
+    name: Docker stack
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build the production image
+        run: docker build --target production --tag employee-manager:ci .
+
+      - name: Production image has no dev dependencies
+        run: docker run --rm --entrypoint sh employee-manager:ci -c 'test -d vendor/laravel/framework && ! test -d vendor/pestphp/pest'
+
+      - name: Start the development stack
+        env:
+          COMPOSE_BAKE: "false"
+        run: |
+          export USER_ID=$(id -u) GROUP_ID=$(id -g)
+          docker compose up --build --detach --wait --wait-timeout 300
+
+      - name: Health check answers
+        run: curl --fail --silent --show-error http://localhost:8080/api/health
+
+      - name: The demo admin can sign in
+        run: |
+          curl --fail --silent --show-error -X POST http://localhost:8080/api/auth/login \
+            -H 'Accept: application/json' \
+            -d 'login=admin' -d 'password=password' | grep -q '"token"'
+
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --no-color --tail=200
+
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
