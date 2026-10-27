@@ -31,6 +31,10 @@ flowchart LR
 - **Infrastructure** implements those contracts. The binding is declared in `InfrastructureServiceProvider`.
 - **Presentation** talks to Application through the two buses. Controllers never run queries.
 
+The rule is enforced by `tests/Arch/ArchitectureTest.php`, which runs with the rest of the suite. It fails the build when Domain imports an outer layer, Application imports Infrastructure or Presentation, Presentation imports Infrastructure, or a controller touches the database. It also checks that every module's commands, queries and handlers extend the bus base classes. Modules are found on disk, so a new one is covered without editing the test.
+
+Two deviations are known and recorded rather than hidden: entities reference their Eloquent factories (`Database\Factories`), and form requests run uniqueness lookups with `DB::table()`.
+
 ## Request flow
 
 A write goes through the command bus, a read through the query bus.
@@ -98,6 +102,7 @@ The pieces for one operation:
 ## Testing
 
 - `tests/Unit`: plain PHP, no framework. Value objects, DTOs.
+- `tests/Arch`: architecture rules (Pest `arch()`), no database.
 - `tests/Feature`: boots the app on in-memory SQLite with `RefreshDatabase`. HTTP endpoints, casts, repositories, buses, permissions.
 - CI runs `pint --test`, `phpstan` (larastan, level 5) and `pest` on every pull request.
 
