@@ -6,6 +6,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Added
 - Architecture tests that enforce the dependency rule and the bus conventions (#131).
+- The test suite also runs on MySQL 8.4 in CI (#114).
+
+### Fixed
+- Signing in returned 500 on MySQL: Passport stored `user_id` as a bigint while users have UUID keys. SQLite hid it. A migration converts the columns (#114).
 
 ## [0.2.0] - 2026-10-26
 
