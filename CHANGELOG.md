@@ -4,6 +4,9 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Added
+- Architecture tests that enforce the dependency rule and the bus conventions (#131).
+
 ## [0.2.0] - 2026-10-26
 
 Organization structure (Sprint 2): countries, cities, positions, work areas, shifts and supervisors, and the user's links to them.
