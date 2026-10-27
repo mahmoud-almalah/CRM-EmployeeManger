@@ -83,6 +83,18 @@ php artisan passport:client --personal
 php artisan serve
 ```
 
+### With Docker
+
+```bash
+docker compose up --build
+```
+
+This starts the API on http://localhost:8080 and MySQL, runs `php artisan app:install` (migrations, Passport keys and client, roles and permissions) and loads the demo accounts below. On Linux, pass your user id so PHP can write to the mounted source: `USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose up --build`.
+
+`app:install` is also what you run by hand on a fresh environment instead of the four artisan commands above. It does nothing for steps that are already done, so it is safe on every deploy. It never creates demo accounts unless you pass `--demo`.
+
+The production image is the `production` target of the same `Dockerfile`: `docker build --target production -t employee-manager .`. It has no dev dependencies and no demo data. It refuses to start without `APP_KEY`, and the database settings, Passport keys (`PASSPORT_PRIVATE_KEY`, `PASSPORT_PUBLIC_KEY`) and log settings come from the environment.
+
 The seeder creates sample accounts (`admin`, `hr`, `manager` and a few employees), all with the password `password`. Change them anywhere that is not your own machine.
 
 ```bash
